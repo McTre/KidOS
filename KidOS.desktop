@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=KidOS
+Comment=KidOSin leikkiympäristö lapselle
+Exec=/home/pi/KidOS/launch-kidos.sh
+Icon=/home/pi/KidOS/assets/kidos-icon.svg
+Terminal=false
+Categories=Game;

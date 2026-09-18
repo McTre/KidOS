@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KidOS - Liikenne</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="../../shared/audio.js" defer></script>
+  <script src="./traffic.js" defer></script>
+</head>
+<body>
+  <main class="traffic-app">
+    <section class="game-layout">
+      <section class="board-panel">
+        <div class="toast" id="toast" aria-live="polite"></div>
+        <div class="board" id="board" role="grid" aria-label="Kaupungin kadut"></div>
+      </section>
+
+      <aside class="side-panel">
+        <div class="message" id="message" aria-live="polite">KÄVELE HAHMON LUO</div>
+
+        <div class="light-panel" aria-label="Liikennevalo">
+          <div class="light-housing">
+            <div class="lamp red" id="lampRed"></div>
+            <div class="lamp green" id="lampGreen"></div>
+          </div>
+          <div class="light-text" id="lightText">ODOTA</div>
+        </div>
+
+        <div class="carry-panel" aria-label="Tehtävä">
+          <div class="carry-icon" id="carryIcon">❔</div>
+          <div class="carry-target" id="carryTarget"></div>
+        </div>
+
+        <div class="dpad-wrap">
+          <div class="dpad">
+            <button class="dpad-button up" type="button" data-dir="up" aria-label="Ylös">▲</button>
+            <button class="dpad-button left" type="button" data-dir="left" aria-label="Vasemmalle">◀</button>
+            <button class="dpad-button down" type="button" data-dir="down" aria-label="Alas">▼</button>
+            <button class="dpad-button right" type="button" data-dir="right" aria-label="Oikealle">▶</button>
+          </div>
+          <div class="dpad-caption">OHJAA ROBOTTIA</div>
+        </div>
+
+        <button class="restart-button" id="restartButton" type="button">UUDESTAAN</button>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>

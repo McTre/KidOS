@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ÄÄNET</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="../../shared/audio.js" defer></script>
+  <script src="./music.js" defer></script>
+</head>
+<body>
+  <main class="music-app">
+  <section class="top-panel">
+    <div class="song-picker">
+      <button id="prevSongButton" class="song-button" type="button" aria-label="EDELLINEN KAPPALE">
+      ◀
+      </button>
+
+      <div id="songSymbol" class="song-symbol" aria-label="KAPPALE">
+      ⭐
+      </div>
+
+      <button id="nextSongButton" class="song-button" type="button" aria-label="SEURAAVA KAPPALE">
+      ▶
+      </button>
+    </div>
+
+    <div id="message" class="message">PAINA VÄRINAPPIA</div>
+  </section>
+
+    <section class="piano-area">
+      <div id="noteLanes" class="note-lanes"></div>
+      <div id="keyboard" class="keyboard"></div>
+    </section>
+
+    <button id="restartButton" class="restart-button" type="button">
+      UUDESTAAN
+    </button>
+  </main>
+</body>
+</html>

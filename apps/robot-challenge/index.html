@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KidOS – Robottihaaste</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="../../shared/audio.js" defer></script>
+  <script src="./robot-challenge.js" defer></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="level-bar" aria-label="Kentän valinta">
+      <button class="round-button" id="previousLevel" type="button" aria-label="Edellinen kenttä">◀</button>
+      <div class="level-number" id="levelNumber" aria-label="Kentän numero">1</div>
+      <button class="round-button" id="nextLevel" type="button" aria-label="Seuraava kenttä">▶</button>
+      <button class="round-button restart-button" id="restartButton" type="button" aria-label="Aloita kenttä uudestaan">↻</button>
+      <button class="round-button edit-button" id="editButton" type="button" aria-label="Muokkaa kenttää" aria-pressed="false">✏️</button>
+    </header>
+
+    <section class="game-layout">
+      <section class="board-panel">
+        <div class="board" id="board" role="grid" aria-label="Robotin 10 kertaa 10 ruudukko"></div>
+      </section>
+
+      <aside class="side-panel">
+        <section class="stats" aria-label="Suorituksen tiedot">
+          <div class="stat"><span aria-hidden="true">▶</span><strong id="playCount">0</strong></div>
+          <div class="stat"><span aria-hidden="true">🤖</span><strong id="commandCount">0</strong></div>
+        </section>
+
+        <section class="queue-panel" aria-label="Komentojono">
+          <div class="command-queue" id="commandQueue"></div>
+        </section>
+
+        <section class="control-panel">
+          <div class="control-grid" id="playControls" aria-label="Robotin komennot">
+            <button class="control special future" type="button" disabled aria-label="Tuleva komento">?</button>
+            <button class="control movement" type="button" data-command="up" aria-label="Ylös">▲</button>
+            <button class="control special" type="button" data-command="press" aria-label="Paina nappia">👉</button>
+            <button class="control movement" type="button" data-command="left" aria-label="Vasemmalle">◀</button>
+            <button class="control play" id="playButton" type="button" aria-label="Suorita komennot">▶</button>
+            <button class="control movement" type="button" data-command="right" aria-label="Oikealle">▶</button>
+            <button class="control special future" type="button" disabled aria-label="Tuleva komento">?</button>
+            <button class="control movement" type="button" data-command="down" aria-label="Alas">▼</button>
+            <button class="control special" type="button" data-command="push" aria-label="Työnnä">💪</button>
+          </div>
+
+          <div class="control-grid editor-grid hidden" id="editorControls" aria-label="Kentän rakennustyökalut">
+            <button class="control tool green-tile" type="button" data-tool="greenButton" aria-label="Vihreä nappi">🔘</button>
+            <button class="control tool green-tile" type="button" data-tool="greenDoor" aria-label="Vihreä ovi">🚪</button>
+            <button class="control tool blue-tile" type="button" data-tool="blueButton" aria-label="Sininen nappi">🔘</button>
+            <button class="control tool blue-tile" type="button" data-tool="blueDoor" aria-label="Sininen ovi">🚪</button>
+            <button class="control tool" type="button" data-tool="box" aria-label="Työnnettävä laatikko">📦</button>
+            <button class="control tool" type="button" data-tool="robot" aria-label="Robotti">🤖</button>
+            <button class="control tool" type="button" data-tool="goal" aria-label="Sydän">❤️</button>
+            <button class="control tool" type="button" data-tool="wall" aria-label="Seinä">⬛</button>
+            <button class="control tool delete-tool" type="button" data-tool="erase" aria-label="Poista pala">×</button>
+          </div>
+
+          <p class="editor-warning hidden" id="editorWarning" aria-live="polite"></p>
+        </section>
+      </aside>
+    </section>
+
+    <div class="win-overlay hidden" id="winOverlay" role="dialog" aria-modal="true" aria-label="Kenttä läpäisty">
+      <div class="win-card">
+        <div class="win-title">HYVÄ!</div>
+        <div class="win-points">
+          <div class="win-point"><span aria-hidden="true">▶</span><strong id="winPlayCount">0</strong></div>
+          <div class="win-point"><span aria-hidden="true">🤖</span><strong id="winCommandCount">0</strong></div>
+        </div>
+        <div class="again-text">UUDESTAAN?</div>
+        <button class="again-button" id="againButton" type="button" aria-label="Pelaa kenttä uudestaan">↻</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

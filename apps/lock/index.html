@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KidOS - Lukko</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="../../shared/audio.js" defer></script>
+  <script src="./lock.js" defer></script>
+</head>
+<body>
+  <main class="lock-screen">
+    <section class="lock-card">
+      <div class="lock-icon" id="lockIcon">🔒</div>
+
+      <div class="code-display" id="codeDisplay">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="message" id="message">ANNA KOODI</div>
+
+      <div class="keypad" id="keypad"></div>
+
+      <div class="actions">
+        <button class="unlock-button" id="unlockButton" aria-label="Avaa lukko">
+          🔓
+        </button>
+
+        <button class="change-button" id="changeButton" aria-label="Vaihda salasana">
+          🔑
+        </button>
+      </div>
+
+      <div class="parent-hint">
+        🔑 VAIHTAA KOODIN
+      </div>
+    </section>
+  </main>
+</body>
+</html>

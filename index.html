@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KidOS</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./shared/audio.js" defer></script>
+    <script src="./script.js" defer></script>
+  </head>
+  <body>
+    <main class="screen" id="desktopScreen">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">★</div>
+          <h1>KIDOS</h1>
+        </div>
+
+        <button
+          class="lock-button topbar-lock-button"
+          aria-label="Lukitse KidOS"
+        >
+          🔒
+        </button>
+      </header>
+
+      <section class="desktop" aria-label="KidOS työpöytä">
+        <button class="app-button" data-app="colors">
+          <div class="app-icon blue">🎨</div>
+          <div class="app-label">VÄRIT</div>
+        </button>
+
+        <button class="app-button" data-app="programming">
+          <div class="app-icon green">🤖</div>
+          <div class="app-label">OHJELMOINTI</div>
+        </button>
+
+        <button class="app-button" data-app="letters">
+          <div class="app-icon yellow">A</div>
+          <div class="app-label">KIRJAIMET</div>
+        </button>
+
+        <button class="app-button" data-app="numbers">
+          <div class="app-icon red">1</div>
+          <div class="app-label">NUMEROT</div>
+        </button>
+
+        <button class="app-button" data-app="music">
+          <div class="app-icon purple">♪</div>
+          <div class="app-label">MUSIIKKI</div>
+        </button>
+
+        <button class="app-button" data-app="story">
+          <div class="app-icon orange">📖</div>
+          <div class="app-label">TARINA</div>
+        </button>
+
+        <button class="app-button" data-app="photos">
+          <span class="app-icon blue">▦</span>
+          <span class="app-label">KUVAT</span>
+        </button>
+
+        <button class="app-button" data-app="coloring">
+          <span class="app-icon green">🖍️</span>
+          <span class="app-label">VÄRITYS</span>
+        </button>
+
+        <button class="app-button" data-app="call">
+          <span class="app-icon orange">📞</span>
+          <span class="app-label">SOITA</span>
+        </button>
+
+        <button class="app-button" data-app="robotchallenge">
+          <span class="app-icon blue">🤖</span>
+          <span class="app-label">ROBOHAASTE</span>
+        </button>
+
+      </section>
+    </main>
+
+    <section class="app-window" id="appWindow" aria-hidden="true">
+      <header class="window-titlebar">
+        <div class="window-title" id="windowTitle">SOVELLUS</div>
+
+        <div class="window-actions">
+          <button
+            class="lock-button window-lock-button"
+            aria-label="Lukitse KidOS"
+          >
+            🔒
+          </button>
+
+          <button
+            class="close-button"
+            id="closeButton"
+            aria-label="Sulje sovellus"
+          >
+            ×
+          </button>
+        </div>
+      </header>
+
+      <iframe class="app-frame" id="appFrame" title="KidOS sovellus"></iframe>
+    </section>
+
+    <div class="lock-overlay" id="lockOverlay" aria-hidden="true">
+      <iframe class="lock-frame" id="lockFrame" title="KidOS lukitus"></iframe>
+    </div>
+  </body>
+</html>

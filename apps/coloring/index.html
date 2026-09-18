@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KidOS - Väritys</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="../../shared/audio.js" defer></script>
+  <script src="./coloring.js" defer></script>
+</head>
+<body>
+  <main class="coloring-app">
+    <section class="coloring-panel">
+      <header class="top-bar">
+        <button class="nav-button" id="prevButton" aria-label="Edellinen kuva">←</button>
+
+        <div class="title-card">
+          <div class="title-icon">🖍️</div>
+          <div class="title-block">
+            <div class="title-text">VÄRITYS</div>
+            <div class="picture-name" id="pictureName">TALO</div>
+          </div>
+        </div>
+
+        <button class="nav-button" id="nextButton" aria-label="Seuraava kuva">→</button>
+      </header>
+
+      <section class="workspace">
+        <aside class="palette-panel">
+          <div class="palette-title">VÄRIT</div>
+          <div class="palette" id="palette"></div>
+
+          <button class="clear-button" id="clearButton">TYHJENNÄ</button>
+        </aside>
+
+        <section class="canvas-panel">
+          <div class="art-frame">
+            <div class="art-canvas" id="artCanvas"></div>
+          </div>
+
+          <div class="bottom-row">
+            <div class="page-indicator" id="pageIndicator">1 / 4</div>
+            <div class="adult-hint">VALITSE VÄRI JA KLIKAA ALUETTA</div>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KidOS - Soita</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="../../shared/audio.js" defer></script>
+  <script src="./call.js" defer></script>
+</head>
+<body>
+  <main class="call-shell">
+    <section class="screen-view active" id="startView" aria-label="Soita mummolle">
+      <article class="contact-card" aria-label="Mummo">
+        <div class="contact-icon">👵</div>
+        <div class="contact-info">
+          <h1>MUMMO</h1>
+          <div class="contact-heart">❤️</div>
+        </div>
+        <button class="call-button" id="childCallButton" type="button" aria-label="Soita mummolle">
+          📞
+        </button>
+      </article>
+      <p class="helper-text">PAINA LUURIA</p>
+    </section>
+
+    <section class="screen-view" id="adultView" aria-label="Aikuisen soittonäkymä">
+      <div class="adult-topline">
+        <div class="small-symbol">👵</div>
+        <div>
+          <h1>AIKUINEN</h1>
+          <p class="adult-help">ANNA MEET-KOODI</p>
+        </div>
+      </div>
+
+      <input
+        id="meetCodeInput"
+        class="meet-input"
+        type="text"
+        inputmode="text"
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        placeholder="abc-defg-hij"
+        aria-label="Google Meet -koodi"
+      />
+
+      <p class="adult-help compact">KOODI VOI OLLA MYÖS KOKO MEET-LINKKI</p>
+      <p class="error-text" id="errorText" aria-live="polite"></p>
+
+      <div class="adult-actions">
+        <button class="back-button" id="backToStartButton" type="button">
+          TAKAISIN
+        </button>
+      </div>
+
+      <button class="hold-button" id="holdButton" type="button">
+        PIDÄ 3 SEKUNTIA
+        <span id="holdProgress">3</span>
+      </button>
+    </section>
+
+    <section class="screen-view" id="openedView" aria-label="Puhelu avattu">
+      <div class="big-symbol">✨</div>
+      <h1>SOITTO AVATTU</h1>
+      <p class="helper-text">MEET AUKESI UUTEEN VÄLILEHTEEN</p>
+      <button class="back-button" id="newCallButton" type="button">UUSI SOITTO</button>
+    </section>
+  </main>
+</body>
+</html>

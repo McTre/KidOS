@@ -1,0 +1,203 @@
+:root {
+  --bg: #162433;
+  --panel: #213447;
+  --panel-light: #2d455c;
+  --text: #f4f7fb;
+  --muted: #b9c7d6;
+  --yellow: #ffd54a;
+  --red: #ff5d73;
+  --blue: #59a8ff;
+  --green: #67dc8a;
+  --purple: #b185ff;
+  --orange: #ffad4d;
+  --shadow: rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(255, 213, 74, 0.14), transparent 36%),
+    radial-gradient(circle at bottom right, rgba(89, 168, 255, 0.14), transparent 34%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+.number-game {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: 18px;
+  padding: 22px;
+}
+
+.symbol-area {
+  min-height: 0;
+  border-radius: 34px;
+  background: rgba(45, 69, 92, 0.92);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  box-shadow: 0 16px 34px var(--shadow), inset 0 -8px 0 rgba(0, 0, 0, 0.16);
+}
+
+.symbol-grid {
+  width: min(620px, 88vw);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 3vw, 28px);
+  place-items: center;
+}
+
+.symbol {
+  width: clamp(72px, 14vw, 140px);
+  height: clamp(72px, 14vw, 140px);
+  border-radius: 30px;
+  background: var(--panel);
+  display: grid;
+  place-items: center;
+  font-size: clamp(44px, 9vw, 92px);
+  box-shadow: 0 10px 20px var(--shadow), inset 0 -8px 0 rgba(0, 0, 0, 0.18);
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(90px, 1fr));
+  gap: 16px;
+}
+
+.domino-button {
+  border: 0;
+  border-radius: 28px;
+  background: #f4f7fb;
+  color: #1c2430;
+  min-height: 170px;
+  padding: 12px;
+  cursor: url("../../assets/kidos-cursor.svg") 8 5, auto;
+  box-shadow: 0 14px 28px var(--shadow), inset 0 -8px 0 rgba(0, 0, 0, 0.2);
+  transition: transform 100ms ease, filter 100ms ease, outline 100ms ease;
+}
+
+.domino-button:hover,
+.domino-button:focus-visible {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.08);
+  outline: 5px solid rgba(255, 255, 255, 0.18);
+}
+
+.domino-button:active {
+  transform: translateY(4px) scale(0.98);
+}
+
+.domino-button.correct {
+  background: var(--green);
+  outline: 8px solid white;
+  transform: scale(1.04);
+}
+
+.domino-button.wrong {
+  background: var(--red);
+  color: white;
+  outline: 8px solid white;
+  transform: rotate(-2deg) scale(0.96);
+}
+
+.domino {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 2px 1fr;
+  align-items: center;
+}
+
+.domino-number {
+  font-size: clamp(48px, 9vw, 86px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.domino-line {
+  width: 86%;
+  height: 2px;
+  background: rgba(28, 36, 48, 0.55);
+  justify-self: center;
+}
+
+.domino-dots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  place-items: center;
+  padding: 8px;
+}
+
+.domino-dot {
+  width: clamp(10px, 2.5vw, 22px);
+  height: clamp(10px, 2.5vw, 22px);
+  border-radius: 50%;
+  background: #1c2430;
+}
+
+.red-x {
+  font-size: clamp(72px, 15vw, 132px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.message {
+  min-height: 76px;
+  border-radius: 28px;
+  background: rgba(33, 52, 71, 0.86);
+  display: grid;
+  place-items: center;
+  padding: 12px 20px;
+  font-size: clamp(28px, 6vw, 56px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.06);
+}
+
+.message.good {
+  color: var(--green);
+}
+
+.message.bad {
+  color: var(--red);
+}
+
+@media (max-width: 760px) {
+  .number-game {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .symbol-area {
+    border-radius: 26px;
+    padding: 16px;
+  }
+
+  .choices {
+    gap: 10px;
+  }
+
+  .domino-button {
+    min-height: 138px;
+    border-radius: 22px;
+  }
+}
+
+html,
+body,
+button,
+canvas {
+  cursor: url("../../assets/kidos-cursor.svg") 8 5, auto;
+}

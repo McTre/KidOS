@@ -1,0 +1,46 @@
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: #162433;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.app-shell {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background:
+    radial-gradient(circle at top left, rgba(89, 168, 255, 0.16), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(177, 133, 255, 0.14), transparent 36%),
+    #162433;
+}
+
+canvas {
+  display: block;
+  width: min(100vw, 900px);
+  height: auto;
+  max-height: calc(100vh - 32px);
+  aspect-ratio: 900 / 650;
+  background: transparent;
+  border-radius: 28px;
+  touch-action: manipulation;
+}
+
+html,
+body,
+button,
+canvas {
+  cursor: url("../../assets/kidos-cursor.svg") 8 5, auto;
+}

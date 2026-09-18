@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OHJELMOINTI</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="../../shared/audio.js" defer></script>
+  <script src="./programming.js" defer></script>
+</head>
+<body>
+  <main class="game">
+    <section class="top-panel">
+      <div class="title">
+        <div class="robot-face">🤖</div>
+        <div>
+          <h1>OHJELMOINTI</h1>
+          <p>VIE ROBO SYDÄMEN LUO</p>
+        </div>
+      </div>
+
+      <div id="message" class="message">VALITSE KOMENNOT</div>
+    </section>
+
+    <section id="grid" class="grid" aria-label="PELIRUUDUKKO"></section>
+
+    <section class="queue-panel">
+      <div id="commandQueue" class="command-queue"></div>
+
+      <button id="removeButton" class="remove-button" aria-label="Poista viimeinen komento">
+        <span>✕</span>
+      </button>
+    </section>
+
+    <section class="controls">
+      <button class="command-button" data-command="up" aria-label="Ylös">
+        <span>⬆️</span>
+        <strong>YLÖS</strong>
+      </button>
+
+      <button class="command-button" data-command="left" aria-label="Vasen">
+        <span>⬅️</span>
+        <strong>VASEN</strong>
+      </button>
+
+      <button id="runButton" class="run-button" aria-label="Käynnistä komennot">
+        <span>▶</span>
+      </button>
+
+      <button class="command-button" data-command="right" aria-label="Oikea">
+        <span>➡️</span>
+        <strong>OIKEA</strong>
+      </button>
+
+      <button class="command-button" data-command="down" aria-label="Alas">
+        <span>⬇️</span>
+        <strong>ALAS</strong>
+      </button>
+    </section>
+  </main>
+</body>
+</html>

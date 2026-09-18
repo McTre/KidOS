@@ -1,0 +1,301 @@
+:root {
+  --bg: #162433;
+  --panel: #213447;
+  --panel-light: #2d455c;
+  --text: #f4f7fb;
+  --yellow: #ffd54a;
+  --red: #ff5d73;
+  --blue: #59a8ff;
+  --green: #67dc8a;
+  --purple: #b185ff;
+  --orange: #ffad4d;
+  --shadow: rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+button,
+input {
+  cursor: url("../../assets/kidos-cursor.svg") 8 5, auto;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(89, 168, 255, 0.18), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(103, 220, 138, 0.14), transparent 36%),
+    var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.call-shell {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.screen-view {
+  width: min(900px, 100%);
+  min-height: min(620px, calc(100vh - 48px));
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+  border-radius: 36px;
+  background: rgba(33, 52, 71, 0.92);
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 42px var(--shadow);
+  text-align: center;
+}
+
+.screen-view.active {
+  display: flex;
+}
+
+.contact-card {
+  width: min(680px, 94vw);
+  min-height: 430px;
+  border-radius: 42px;
+  background: var(--panel-light);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  justify-items: center;
+  gap: 16px;
+  padding: 28px;
+  box-shadow:
+    0 18px 34px var(--shadow),
+    inset 0 -10px 0 rgba(0, 0, 0, 0.18);
+}
+
+.contact-icon,
+.big-symbol,
+.small-symbol {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  box-shadow: inset 0 -10px 0 rgba(0, 0, 0, 0.18);
+}
+
+.contact-icon {
+  width: min(230px, 38vw);
+  height: min(230px, 38vw);
+  border-radius: 48px;
+  font-size: clamp(92px, 15vw, 160px);
+}
+
+.contact-info {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+.contact-info h1,
+.screen-view h1 {
+  margin: 0;
+  font-size: clamp(42px, 7vw, 78px);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 3px;
+}
+
+.contact-heart {
+  font-size: clamp(42px, 7vw, 72px);
+}
+
+.call-button {
+  grid-column: 1 / -1;
+  width: min(360px, 72vw);
+  min-height: 150px;
+  border-radius: 48px;
+  background: var(--green);
+  font-size: clamp(74px, 13vw, 128px);
+}
+
+.big-symbol {
+  width: min(210px, 45vw);
+  height: min(210px, 45vw);
+  border-radius: 48px;
+  font-size: clamp(86px, 17vw, 150px);
+}
+
+.small-symbol {
+  width: clamp(92px, 16vw, 150px);
+  height: clamp(92px, 16vw, 150px);
+  border-radius: 34px;
+  font-size: clamp(54px, 9vw, 96px);
+}
+
+.adult-topline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.helper-text,
+.adult-help,
+.error-text {
+  margin: 0;
+  max-width: 760px;
+  font-size: clamp(20px, 3vw, 34px);
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: rgba(244, 247, 251, 0.9);
+}
+
+.adult-help {
+  font-size: clamp(18px, 2.5vw, 28px);
+  color: rgba(244, 247, 251, 0.82);
+}
+
+.adult-help.compact {
+  margin-top: -8px;
+  font-size: clamp(16px, 2.2vw, 22px);
+}
+
+.error-text {
+  min-height: 34px;
+  color: var(--red);
+}
+
+button {
+  border: 0;
+  color: var(--text);
+  font-family: inherit;
+  font-weight: 900;
+  box-shadow:
+    0 14px 28px var(--shadow),
+    inset 0 -8px 0 rgba(0, 0, 0, 0.2);
+  transition:
+    transform 120ms ease,
+    filter 120ms ease,
+    outline 120ms ease;
+}
+
+button:hover,
+button:focus-visible {
+  filter: brightness(1.12);
+  outline: 5px solid rgba(255, 213, 74, 0.9);
+}
+
+button:active {
+  transform: translateY(4px) scale(0.97);
+  box-shadow:
+    0 8px 18px var(--shadow),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.meet-input {
+  width: min(660px, 92vw);
+  border: 5px solid rgba(255, 255, 255, 0.16);
+  border-radius: 26px;
+  background: rgba(244, 247, 251, 0.96);
+  color: #13202d;
+  font-size: clamp(28px, 5vw, 54px);
+  font-weight: 900;
+  text-align: center;
+  padding: 20px 18px;
+  outline: none;
+  user-select: text;
+}
+
+.meet-input:focus {
+  border-color: var(--yellow);
+}
+
+.adult-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.back-button,
+.notify-button {
+  min-width: min(300px, 82vw);
+  min-height: 76px;
+  padding: 12px 24px;
+  border-radius: 26px;
+  font-size: clamp(22px, 3.4vw, 34px);
+}
+
+.back-button {
+  background: var(--panel-light);
+}
+
+.notify-button {
+  background: var(--blue);
+}
+
+.hold-button {
+  width: min(560px, 92vw);
+  min-height: 130px;
+  border-radius: 38px;
+  background: var(--orange);
+  color: #202020;
+  font-size: clamp(26px, 4.6vw, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.hold-button span {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.hold-button.holding {
+  outline: 7px solid rgba(103, 220, 138, 0.95);
+  transform: scale(1.02);
+}
+
+@media (max-width: 740px) {
+  .call-shell {
+    padding: 14px;
+  }
+
+  .screen-view {
+    min-height: calc(100vh - 28px);
+    border-radius: 26px;
+    padding: 18px;
+    gap: 15px;
+  }
+
+  .contact-card {
+    grid-template-columns: 1fr;
+    min-height: 420px;
+    border-radius: 32px;
+    padding: 20px;
+  }
+
+  .contact-icon,
+  .big-symbol {
+    border-radius: 34px;
+  }
+
+  .adult-topline {
+    gap: 12px;
+  }
+}

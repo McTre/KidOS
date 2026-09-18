@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>KidOS - Kuvat</title>
+
+  <link rel="stylesheet" href="./style.css" />
+  <script src="../../shared/audio.js" defer></script>
+  <script src="./photos.js" defer></script>
+</head>
+<body>
+  <main class="photos-app">
+    <section class="gallery-panel">
+      <div class="gallery-header">
+        <button class="page-button" id="prevButton" aria-label="Edellinen sivu">
+          ←
+        </button>
+
+        <div class="gallery-title">
+          <div class="big-icon">▦</div>
+
+          <div class="title-block">
+            <div class="title-text">KUVAT</div>
+            <div class="page-indicator" id="pageIndicator">1 / 1</div>
+          </div>
+        </div>
+
+        <button class="page-button" id="nextButton" aria-label="Seuraava sivu">
+          →
+        </button>
+      </div>
+
+      <div class="thumb-grid" id="thumbGrid"></div>
+
+      <p class="adult-hint">
+        VALITSE KUVA. KLIKKAA SUURTA KUVAA PALATAKSESI TAKAISIN.
+      </p>
+    </section>
+
+    <div class="image-viewer hidden" id="imageViewer">
+      <div id="largeImage" class="large-card" aria-label="Suuri kuva"></div>
+    </div>
+  </main>
+</body>
+</html>

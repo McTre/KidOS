@@ -1,15 +1,15 @@
 # KidOS Masterplan
 
-Päivitetty: 2026-09-18  
-Tila: zip-paketin nykytilaa vastaava koodikatselmus
+Päivitetty: 2026-09-18
+Tila: git-repon nykytilaa vastaava kooste (github.com/McTre/KidOS, `main`)
 
 ## 1. Projektin idea
 
 **KidOS** on selainpohjainen leikkikäyttöjärjestelmä 3–5-vuotiaille lapsille.
 
-Tarkoitus ei ole tehdä oikeaa käyttöjärjestelmää, vaan turvallinen, koko ruudun leikkiympäristö, jossa lapsi voi harjoitella tietokoneen käyttöä, hiirtä, värejä, numeroita, kirjaimia, ääniä, yksinkertaista ohjelmointiajattelua, kuvien katselua, väritystä ja luovaa tekemistä.
+Tarkoitus ei ole tehdä oikeaa käyttöjärjestelmää, vaan turvallinen, koko ruudun leikkiympäristö, jossa lapsi voi harjoitella tietokoneen käyttöä, hiirtä, näppäimistöä, värejä, numeroita, kirjaimia, ääniä, yksinkertaista ohjelmointiajattelua, liikennesääntöjä, kuvien katselua, väritystä ja luovaa tekemistä.
 
-KidOS toimii selaimessa ja sitä kehitetään kevyenä HTML/CSS/JavaScript-projektina. Kehitykseen sopii StackBlitz Web Platform, koska tiedostot ovat suoraan muokattavissa ja sovellusta voi testata heti selaimessa.
+KidOS toimii selaimessa ja on tehty kevyenä HTML/CSS/JavaScript-projektina. Projekti on git-repona GitHubissa, ja siitä voi ajaa suoraan täysruutuisena Raspberry Pi:llä (ks. luku 24).
 
 Käyttöliittymä suunnitellaan lapselle, joka ei välttämättä osaa lukea. KidOS perustuu ensisijaisesti suuriin painikkeisiin, selkeisiin väreihin, isoihin symboleihin, muotoihin, ääniin, toistuvaan logiikkaan ja onnistumisen tunteeseen.
 
@@ -21,7 +21,7 @@ KidOS on suunnattu erityisesti:
 
 - 3–5-vuotiaille lapsille
 - lapsille, jotka eivät vielä osaa lukea
-- hiiren, kosketuksen ja myöhemmin näppäimistön harjoitteluun
+- hiiren, kosketuksen ja näppäimistön harjoitteluun
 - turvalliseen kokeiluun
 - vanhemman kanssa yhdessä käyttämiseen
 
@@ -44,13 +44,7 @@ Pääperiaatteet:
 - sovellusikkunan pitää tuntua yhtenäiseltä
 - pelialueen ja ohjetekstien pitää olla selvästi eroteltuja
 
-Taustan perusväri:
-
-```css
-#162433
-```
-
-Yleisiä KidOS-värejä:
+Yleiset KidOS-värit (käytössä kaikissa sovelluksissa):
 
 ```css
 --bg: #162433;
@@ -75,19 +69,17 @@ KidOS tehdään tavallisena selainprojektina.
 
 Teknologiat:
 
-- HTML
-- CSS
-- JavaScript
+- HTML / CSS / JavaScript
 - Canvas peleihin ja piirtämiseen
 - Web Audio API ääniin
 - iframe KidOSin sisäisiin sovellusikkunoihin
 - LocalStorage lukon symbolisalasanalle sekä ROBOHAASTEEN kentille ja tilastoille
-- SVG/CSS värityspelin täytettäville alueille
+- SVG/CSS värityspelin täytettäville alueille ja LIIKENTEEN kaupunkiruudukolle
 - Google Meet -linkin avaaminen SOITA-sovelluksesta uuteen välilehteen
+- Chromiumin kioskitila (`--kiosk`) täysruutukäynnistykseen Raspberry Pi:llä
 
 Ei tarvita:
 
-- Pythonia
 - palvelinta
 - tietokantaa
 - raskasta frameworkia
@@ -97,100 +89,52 @@ Tärkeä periaate:
 
 > Projektin pitää pysyä yksinkertaisena. KidOS on tarkoituksella kevyt selainprojekti, jota on helppo ymmärtää, muokata ja jatkaa.
 
-## 5. Nykyinen koodirakenne zipissä
-
-Zipissä on tällä hetkellä seuraava todellinen rakenne:
+## 5. Nykyinen koodirakenne
 
 ```text
 KidOS/
-├── index.html
-├── style.css
-├── script.js
-├── README.md
+├── index.html            KidOS-työpöytä
+├── style.css             työpöydän ulkoasu
+├── script.js             sovellusten avaaminen, sulkeminen, lukitus, kohdistus
+├── launch-kidos.sh        täysruutukäynnistin (Raspberry Pi, Chromium-kioski)
+├── KidOS.desktop          työpöytäkuvake täysruutukäynnistimelle
+├── README.md              repon etusivu: esittely + asennusohje
+├── KidOS-masterplan-2026-09-18.md   tämä dokumentti
+├── kidos.zip              vanha koko projektin zip-kopio (git-ignoroitu, ei osa repoa)
 ├── assets/
-│   └── kidos-cursor.svg
+│   ├── kidos-cursor.svg   KidOSin oma kursori
+│   ├── kidos-icon.svg     käynnistimen ikoni
+│   └── screenshot-desktop.png   README:n kuvakaappaus työpöydästä
 ├── shared/
-│   └── audio.js
+│   └── audio.js           yhteiset äänet (käytössä kaikkialla, myös työpöydällä)
 └── apps/
-    ├── coloring/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── coloring.js
-    ├── call/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── call.js
-    ├── colors/
-    │   ├── README.md
-    │   ├── index.html
-    │   ├── style.css
-    │   └── colors.js
-    ├── drawing/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── drawing.js
-    ├── letters/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── letters.js
-    ├── lock/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── lock.js
-    ├── music/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── music.js
-    ├── numbers/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── numbers.js
-    ├── photos/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── photos.js
-    ├── programming/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── programming.js
-    ├── robot-challenge/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── robot-challenge.js
-    ├── story/
-    │   ├── index.html
-    │   ├── style.css
-    │   └── story.js
-    └── placeholder.html
+    ├── colors/            index.html, style.css, colors.js
+    ├── numbers/           index.html, style.css, numbers.js
+    ├── letters/           index.html, style.css, letters.js
+    ├── music/             index.html, style.css, music.js
+    ├── story/             index.html, style.css, story.js
+    ├── photos/            index.html, style.css, photos.js
+    ├── coloring/          index.html, style.css, coloring.js
+    ├── call/              index.html, style.css, call.js
+    ├── programming/       index.html, style.css, programming.js
+    ├── robot-challenge/   index.html, style.css, robot-challenge.js
+    ├── traffic/           index.html, style.css, traffic.js
+    ├── lock/              index.html, style.css, lock.js
+    └── drawing/           index.html, style.css, drawing.js  (ei työpöydällä)
 ```
 
-Pääperiaate:
-
-```text
-index.html       = KidOS-työpöytä
-style.css        = KidOS-työpöydän ulkoasu
-script.js        = sovellusten avaaminen, sulkeminen ja lukitus
-shared/audio.js  = yhteiset äänet
-assets/          = yhteiset visuaaliset apuresurssit
-apps/*           = yksittäiset sovellukset
-```
+Vanhat, aiemmin tunnetut epäjohdonmukaisuudet on korjattu: `apps/colors/README.md` (LeikkiOS-jäänne) ja käyttämätön `apps/placeholder.html` on poistettu kokonaan.
 
 ## 6. Työpöytä ja sovellusikkuna
 
 KidOS käynnistyy työpöydälle.
 
-Nykyiset työpöydän sovellukset zipissä:
+Työpöydän sovellukset (11 kpl):
 
-- VÄRIT
-- OHJELMOINTI
-- KIRJAIMET
-- NUMEROT
-- MUSIIKKI
-- TARINA
-- KUVAT
-- VÄRITYS
-- SOITA
-- ROBOHAASTE
+```text
+VÄRIT, OHJELMOINTI, KIRJAIMET, NUMEROT, MUSIIKKI, TARINA,
+KUVAT, VÄRITYS, SOITA, ROBOHAASTE, LIIKENNE
+```
 
 Sovellukset avataan KidOSin sisäiseen iframe-ikkunaan.
 
@@ -201,17 +145,13 @@ Ikkunassa on:
 - punainen sulkunappi oikealla
 - sovellus iframe-ikkunan sisällä
 
-Sulkunappi noudattaa tuttua Windows/Linux-logiikkaa:
+Sulkunappi noudattaa tuttua Windows/Linux-logiikkaa (punainen ruutu + X = sulje sovellus). Lukituspainike on sekä pääpalkissa että sovellusikkunan yläpalkissa.
 
-```text
-punainen ruutu + X = sulje sovellus
-```
-
-Lukituspainike on sekä pääpalkissa että sovellusikkunan yläpalkissa.
+**Automaattinen näppäimistökohdistus:** kun sovellus avataan, `script.js` kohdistaa iframen automaattisesti sovelluksen latautuessa (`appFrame.contentWindow.focus()`). Näin esimerkiksi MUSIIKIN ja LIIKENTEEN näppäimistöohjaus toimii heti avaamisesta lähtien, eikä lapsen tarvitse ensin klikata ikkunaa. Sivuvaikutus: KidOSin oma Escape-sulkulogiikka toimii luotettavasti vain kun kohdistus on työpöydällä, mutta punainen ×-sulkunappi toimii aina kohdistuksesta riippumatta.
 
 ## 7. Sovellusten avaaminen
 
-Nykyinen `script.js` avaa sovellukset iframeen ja lisää cache-busterin, jotta StackBlitz tai selain ei näytä vanhaa versiota.
+`script.js` avaa sovellukset iframeen ja lisää cache-busterin, jotta selain ei näytä vanhaa versiota.
 
 Nykyinen sovelluslista koodissa:
 
@@ -226,31 +166,23 @@ const apps = {
   photos: { title: 'KUVAT', url: './apps/photos/index.html' },
   coloring: { title: 'VÄRITYS', url: './apps/coloring/index.html' },
   call: { title: 'SOITA', url: './apps/call/index.html' },
-  robotchallenge: {
-    title: 'ROBOHAASTE',
-    url: './apps/robot-challenge/index.html'
-  }
+  robotchallenge: { title: 'ROBOHAASTE', url: './apps/robot-challenge/index.html' },
+  traffic: { title: 'LIIKENNE', url: './apps/traffic/index.html' }
 };
 ```
 
 Huomio:
 
-- `drawing/` on zipissä olemassa, mutta sitä ei tällä hetkellä avata työpöydältä.
+- `drawing/` on repossa olemassa, mutta sitä ei tällä hetkellä avata työpöydältä (tietoinen päätös, ks. luku 13).
 - `lock/` ei ole tavallinen työpöytäsovellus, vaan avataan lukitus-overlayna.
-- `placeholder.html` on vielä mukana, mutta nykyiset työpöydän sovellukset eivät näytä käyttävän sitä.
-- Työpöydällä on nyt 10 avattavaa sovellusta. `apps/`-kansiossa on niiden lisäksi `drawing/`, `lock/` ja `placeholder.html`.
 
 ## 8. Yhteinen äänijärjestelmä
 
 Äänet tehdään JavaScriptillä Web Audio API:n avulla.
 
-Yhteinen tiedosto:
+Yhteinen tiedosto: `shared/audio.js`
 
-```text
-shared/audio.js
-```
-
-Nykyiset yhteiset äänifunktiot:
+Yhteiset äänifunktiot:
 
 ```js
 playClickSound()
@@ -263,650 +195,279 @@ playSoftPopSound()
 playWinSound()
 ```
 
-Suurin osa sovelluksista käyttää yhteistä `shared/audio.js`-tiedostoa.
-
-Huomio:
-
-- Työpöydän `script.js` sisältää vielä oman `playDesktopSound()`-ratkaisun.
-- Jatkossa olisi siistimpää käyttää myös työpöydällä `shared/audio.js`-tiedostoa, jotta äänilogiikka olisi yhdessä paikassa.
-- `drawing/` ei tällä hetkellä lataa `shared/audio.js`-tiedostoa.
+Kaikki sovellukset — myös työpöytä (`script.js`) ja `apps/drawing/` — lataavat ja käyttävät nyt `shared/audio.js`-tiedostoa. Työpöydän oma `playDesktopSound()`-funktio on edelleen olemassa, mutta se on ohut kääre, joka kutsuu `playOpenSound()`/`playCloseSound()`-funktioita eikä enää sisällä omaa Web Audio -toteutusta.
 
 ## 9. Kursori ja klikattavien kohteiden korostus
 
-KidOSissa halutaan oma iso nuolikursori, joka tuntuu normaalilta tietokoneen kursorilta mutta on lapselle selkeämpi.
+KidOSissa on oma iso nuolikursori, joka tuntuu normaalilta tietokoneen kursorilta mutta on lapselle selkeämpi.
 
 Nykyinen toteutus:
 
-- `assets/kidos-cursor.svg` on olemassa.
-- `style.css` käyttää sitä CSS-kursorina.
-- Työpöydän napit korostuvat hover/focus-tilassa.
-- Painikkeet pienenevät/painuvat `:active`-tilassa, mikä antaa klikkauspalautetta.
+- `assets/kidos-cursor.svg` määritellään CSS-kursorina joka sovelluksessa (`cursor: url(...) 8 5, auto;`).
+- Työpöydän ja sovellusten napit korostuvat hover/focus-tilassa ja painuvat `:active`-tilassa.
+- Kaikki aiemmin löydetyt `cursor: pointer;` -määritykset (19 kohtaa yhdeksässä tiedostossa) on korvattu KidOSin omalla kursorilla, jotta klikattavan kohteen päällä ei näy käyttöjärjestelmän osoitinkäsi.
 
-Tärkeä tavoitesääntö:
-
-> Kun kursori menee klikattavan kohteen päälle, kohde korostuu selvästi, mutta kursori ei saa muuttua takaisin tavalliseksi käyttöjärjestelmän kursoriksi.
-
-Nykyinen koodihuomio:
-
-- Osa painikkeista määrittelee edelleen `cursor: pointer;`.
-- Tämä voi aiheuttaa sen, että klikattavan kohteen päällä näkyy käyttöjärjestelmän osoitinkäsi eikä KidOSin oma nuolikursori.
-- Tämä kannattaa korjata yleisesti poistamalla `cursor: pointer;` tai korvaamalla se samalla custom cursor -määrittelyllä kaikissa klikattavissa elementeissä.
-
-Mahdollinen myöhempi parannus:
-
-- Jos halutaan oikeasti animoitu kursori, CSS-kursorin sijaan voidaan tehdä oma `div`-pohjainen cursor-layer, joka seuraa hiirtä ja kutistuu klikkauksessa.
-- Nykyinen versio on hyvä välivaihe, mutta ei vielä täysi animoitu kursori.
+Mahdollinen myöhempi parannus: jos halutaan oikeasti animoitu kursori, CSS-kursorin sijaan voidaan tehdä oma `div`-pohjainen cursor-layer, joka seuraa hiirtä ja kutistuu klikkauksessa.
 
 ## 10. Lukitus
 
-Lukitus on toteutettu omana sovelluksenaan:
-
-```text
-apps/lock/
-```
+Lukitus on toteutettu omana sovelluksenaan (`apps/lock/`).
 
 Nykyinen toiminta:
 
 - lukko avataan työpöydän tai sovellusikkunan lukituspainikkeesta
 - nykyinen avoin sovellus suljetaan ennen lukitusta
 - lukitus näytetään koko ruudun overlayna
-- oletussalasana on neljän symbolin koodi:
-
-```text
-⭐ ❤️ 🚗 🌙
-```
-
+- oletussalasana on neljän symbolin koodi: ⭐ ❤️ 🚗 🌙
 - salasana tallennetaan selaimen LocalStorageen avaimella `kidos-symbol-password`
 - käyttäjä voi vaihtaa salasanan neljään symboliin
 - oikea koodi lähettää parent-ikkunalle `KIDOS_UNLOCK`-viestin
 
-Nykytila:
+Nykytila: **LUKKO = toimiva perusversio**
 
-```text
-LUKKO = toimiva perusversio
-```
-
-Tuleva suunnittelumuistio:
-
-- myöhemmin lukkoon voidaan tehdä kolme vaikeustasoa
-- nykyinen versio pidetään helppona neljän symbolin koodina
-- vaikeammat tasot voivat sisältää pidempiä koodeja, realistisempaa lukituslogiikkaa ja mahdollisesti numeroita
+Tuleva suunnittelumuistio: myöhemmin lukkoon voidaan tehdä kolme vaikeustasoa; nykyinen versio pidetään helppona neljän symbolin koodina.
 
 ## 11. VÄRIT-sovellus
 
-Sijainti:
+Sijainti: `apps/colors/`
 
-```text
-apps/colors/
-```
+- canvas-pohjainen värien etsintäpeli, säädettävä ruudukkokoko (nyt `gridSize = 5`)
+- tavoiteväri näytetään tekstillä `ETSI`, jäljellä oleva määrä isona numerona
+- oikea ruutu korostuu, väärä tärähtää ja saa punaisen kehyksen
+- pelin päätyttyä `HYVÄ!`, `LÖYSIT KAIKKI`, `UUDESTAAN`
 
-Nykyinen toteutus:
-
-- canvas-pohjainen värien etsintäpeli
-- ruudukko on tällä hetkellä `gridSize = 5`
-- tavoiteväri näytetään tekstillä `ETSI`
-- jäljellä oleva määrä näytetään isona numerona
-- oikea ruutu korostuu ja merkitään löydetyksi
-- väärä ruutu tärähtää ja saa punaisen kehyksen
-- alhaalla on vanhemmalle ohje: `KLIKKAILE OIKEAT VÄRIT`
-- pelin päätyttyä näkyy `HYVÄ!`, `LÖYSIT KAIKKI` ja `UUDESTAAN`
-
-Nykytila:
-
-```text
-VÄRIT = toimiva ja lähes valmis
-```
-
-Huomiot:
-
-- masterplanissa on mainittu mahdollinen `gridSize = 6`, mutta zipissä se on nyt 5.
-- tämä ei ole virhe, mutta masterplanin pitää jatkossa puhua säädettävästä koosta eikä väittää yhtä kokoa valmiiksi totuudeksi.
-- `apps/colors/README.md` käyttää vielä vanhaa nimeä LeikkiOS ja on selvästi vanhentunut.
+Nykytila: **VÄRIT = toimiva ja lähes valmis**
 
 ## 12. NUMEROT-sovellus
 
-Sijainti:
+Sijainti: `apps/numbers/`
 
-```text
-apps/numbers/
-```
+- näytetään 1–9 symbolia, lapsi valitsee oikean numeron neljästä dominopalikka-vaihtoehdosta
+- vaihtoehdot kasvavassa järjestyksessä, onnistumis- ja virhepalaute
 
-Nykyinen toteutus:
-
-- näytetään 1–9 symbolia
-- lapsi valitsee oikean numeron neljästä vaihtoehdosta
-- vaihtoehdot esitetään dominopalikoina
-- vaihtoehdot lajitellaan kasvavaan järjestykseen
-- oikeasta valinnasta tulee onnistumispalaute
-- väärästä valinnasta tulee virhepalaute
-
-Nykytila:
-
-```text
-NUMEROT = toimiva perusversio
-```
+Nykytila: **NUMEROT = toimiva perusversio**
 
 ## 13. PIIRRÄ-sovellus
 
-Sijainti:
+Sijainti: `apps/drawing/`
 
-```text
-apps/drawing/
-```
+- kevyt canvas-piirto, väri vaihtuu automaattisesti hue-arvon mukaan pointer-tapahtumilla
+- lataa nyt `shared/audio.js`:n, vaikka ei aktiivisesti soita ääniä
 
-Nykyinen toteutus:
+Nykytila: **PIIRRÄ = tekninen miniprototyyppi, tietoisesti pidetty työpöydän ulkopuolella**
 
-- erittäin kevyt canvas-piirto
-- piirtää pointer-tapahtumilla
-- väri vaihtuu automaattisesti hue-arvon mukaan
-- ei vielä työpöydän sovelluslistassa
-- ei vielä yhteisiä ääniä
-- ei vielä tyhjennysnappia tai värivalintaa
-
-Nykytila:
-
-```text
-PIIRRÄ = tekninen miniprototyyppi, ei vielä viimeistelty KidOS-sovellus
-```
-
-Suositus:
-
-- joko palautetaan PIIRRÄ työpöydälle ja viimeistellään se KidOS-tyyliseksi
-- tai pidetään se toistaiseksi sivussa ja merkitään myöhemmäksi laajennukseksi
+Päätös (2026-09-18): PIIRRÄ jätetään toistaiseksi sivuun. Jos sitä joskus viimeistellään, tarvitaan tyhjennysnappi ja värivalitsin ennen kuin se palautetaan työpöydälle.
 
 ## 14. KIRJAIMET-sovellus
 
-Sijainti:
+Sijainti: `apps/letters/`
 
-```text
-apps/letters/
-```
+- näyttää symbolin, sanan ja kirjainpaikat; lapsi valitsee kirjaimet aakkosista, tukee myös fyysistä näppäimistöä
+- sanat: KALA, TALO, AUTO, KUU, AURINKO, PUU, KOIRA, KISSA, TÄHTI, OMENA
 
-Nykyinen toteutus:
+Nykytila: **KIRJAIMET = toimiva perusversio**
 
-- näyttää symbolin, sanan ja kirjainpaikat
-- lapsi valitsee oikeat kirjaimet aakkosista
-- tukee myös fyysistä näppäimistöä
-- oikeasta kirjaimesta täytetään seuraava paikka
-- väärä kirjain tärähtää/antaa virhepalautteen
+## 15. MUSIIKKI-sovellus
 
-Nykyiset sanat:
+Sijainti: `apps/music/`
 
-```text
-KALA, TALO, AUTO, KUU, AURINKO, PUU, KOIRA, KISSA, TÄHTI, OMENA
-```
+Nimi on vakiintunut lopullisesti muotoon **MUSIIKKI** (vanha `ÄÄNET`-nimi on hylätty).
 
-Nykytila:
+- isot värilliset koskettimet, kappale valitaan vasen/oikea-nuolilla ja esitetään symbolilla
+- nuottiohjaus näyttää seuraavat painettavat sävelet, kappaleen voi aloittaa uudestaan
+- kappaleet: yksinkertainen aloitusmelodia, UKKO NOOA, HÄMÄ HÄMÄ HÄKKI
+- **Uusi:** värinäppäimet voi soittaa myös näppäimistöllä (**D F G H J K**, kotirivi), kirjain näkyy myös painikkeessa. Hyötyy automaattisesta ikkunan kohdistuksesta (luku 6).
 
-```text
-KIRJAIMET = toimiva perusversio
-```
-
-Huomio:
-
-- Kirjainvalikoima on rajattu, mutta ääkköset ja pitkät sanat kannattaa testata rauhassa pienellä lapsella.
-- `AURINKO` on melko pitkä sana 3-vuotiaalle, mutta toimii symbolin kanssa tutustumispelinä.
-
-## 15. MUSIIKKI / ÄÄNET -sovellus
-
-Sijainti:
-
-```text
-apps/music/
-```
-
-Nykyinen nimi työpöydällä:
-
-```text
-MUSIIKKI
-```
-
-Aiempi masterplan-nimi:
-
-```text
-ÄÄNET
-```
-
-Nykyinen toteutus:
-
-- isot värilliset koskettimet
-- kappale valitaan vasen/oikea-nuolilla
-- kappale esitetään symbolilla
-- nuottiohjaus näyttää seuraavia painettavia säveliä
-- kappaleen voi aloittaa uudestaan
-- sovellus ei kaadu, vaikka kappale on lopussa ja käyttäjä painaa nuottia
-
-Nykyiset kappaleet:
-
-- ensimmäinen yksinkertainen melodia
-- UKKO NOOA
-- HÄMÄ HÄMÄ HÄKKI
-
-Nykytila:
-
-```text
-MUSIIKKI = toimiva perusversio
-```
-
-Huomio:
-
-- Nimeksi kannattaa päättää yksi: joko `ÄÄNET` tai `MUSIIKKI`.
-- Koska nykyinen koodi käyttää työpöydällä nimeä `MUSIIKKI`, tämä masterplan käyttää jatkossa nimeä `MUSIIKKI / ÄÄNET` kunnes nimi päätetään lopullisesti.
+Nykytila: **MUSIIKKI = toimiva perusversio, näppäimistötuella**
 
 ## 16. TARINA-sovellus
 
-Sijainti:
+Sijainti: `apps/story/`
 
-```text
-apps/story/
-```
+- etenee kohtauksesta toiseen, isolla symbolikuvalla, otsikolla, lyhyellä tekstillä ja valintapainikkeilla
 
-Nykyinen toteutus:
-
-- tarina etenee kohtauksesta toiseen
-- jokaisessa kohtauksessa on iso symbolikuva, otsikko, lyhyt teksti ja valintapainikkeet
-- valinnat ovat isoja ja symbolipohjaisia
-- sopii rauhalliseksi kuvatarinaksi
-
-Nykytila:
-
-```text
-TARINA = toimiva ensimmäinen versio
-```
-
-Huomio:
-
-- Tarina sisältää tekstiä, joten täysin lukutaidottomalle lapselle tämä toimii parhaiten aikuisen kanssa.
-- Jatkossa tarinaa voi viedä enemmän kuvakorttien suuntaan.
+Nykytila: **TARINA = toimiva ensimmäinen versio**
 
 ## 17. OHJELMOINTI-sovellus
 
-Sijainti:
+Sijainti: `apps/programming/`
 
-```text
-apps/programming/
-```
+- ruudukossa robotti, sydän ja kiviä; lapsi lisää enintään 6 komentoa jonoon
+- kenttä generoidaan niin, että sydämeen on reitti; nykyinen tasolista sisältää vain 4×4-kentän kahdella kivellä
 
-Nykyinen toteutus:
-
-- ruudukossa on robotti, sydän ja kiviä
-- lapsi lisää komentoja jonoon
-- komentoja voi olla enintään 6
-- robotti suorittaa komennot järjestyksessä
-- jos robotti osuu seinään tai kiveen, tulee pehmeä virhepalaute
-- jos robotti pääsee sydämeen, tulee onnistumispalaute
-- kenttä generoidaan niin, että sydämeen on reitti
-- nykyinen tasolista sisältää vain 4x4-kentän kahdella kivellä
-
-Nykytila:
-
-```text
-OHJELMOINTI = toimiva perusversio
-```
-
-Huomio:
-
-- Koodissa on jo valmius ruudukkokoon luokille `size-4`, `size-5`, `size-6`, mutta käytössä on vain 4x4.
-- Tämä vastaa päätöstä jättää vaikeustason kasvu myöhemmäksi.
-- Emoji-symbolit voivat joissakin ympäristöissä näyttää erilaisilta. Jos robotti tai kivi näkyy oudosti, kannattaa vaihtaa CSS-pohjaisiin muotoihin tai omiin SVG-kuviin.
+Nykytila: **OHJELMOINTI = toimiva perusversio (4×4)**
 
 ## 18. KUVAT-sovellus
 
-Sijainti:
+Sijainti: `apps/photos/`
 
-```text
-apps/photos/
-```
+- symbolipohjainen kuvagalleria (16 kuvakorttia, 2 sivua), iso katselunäkymä, sulkeutuu klikkauksella tai Escapella
 
-Nykyinen toteutus:
-
-- kuvagalleria käyttää valmiita isoja symboleja oikeiden kuvien sijaan
-- yhdellä sivulla näkyy 8 kuvaa
-- kuvia on 16, eli kaksi sivua
-- kuvaa painamalla aukeaa iso katselunäkymä
-- iso kuva sulkeutuu painamalla näkymää tai Escape-näppäintä
-
-Nykyiset kuvakortit:
-
-```text
-KISSA, KOIRA, AUTO, TALO, KALA, PUU, TÄHTI, RAKETTI,
-PUPU, KUKKA, PALLO, LAIVA, AURINKO, KUU, SATEENKAARI, ROBOTTI
-```
-
-Nykytila:
-
-```text
-KUVAT = toimiva symbolipohjainen testiversio
-```
-
-Huomio:
-
-- Tämä syntyi siksi, että ilmaisen ympäristön storage-raja oli liian pieni oikeille kuville.
-- Myöhemmin voidaan vaihtaa symbolit oikeisiin kuviin tai pieniin optimoituihin SVG/WEBP-kuviin.
+Nykytila: **KUVAT = toimiva symbolipohjainen testiversio**
 
 ## 19. VÄRITYS-sovellus
 
-Sijainti:
+Sijainti: `apps/coloring/`
 
-```text
-apps/coloring/
-```
+- väripaletti + klikattavat SVG/HTML-alueet, kuvat vaihtuvat vasen/oikea-nuolilla, tyhjennysnappi
 
-Nykyinen toteutus:
-
-- lapsi valitsee värin paletista
-- lapsi klikkaa kuvan aluetta
-- klikattu alue täyttyy valitulla värillä
-- kuvia vaihdetaan vasen/oikea-nuolilla
-- nykyisen kuvan värityksen voi tyhjentää
-- väritystilat säilyvät sovelluksen sisällä kuvia vaihdettaessa
-
-Nykyiset värityskuvat:
-
-```text
-TALO, AUTO, KALA, KUKKA
-```
-
-Nykytila:
-
-```text
-VÄRITYS = toimiva ensimmäinen versio
-```
-
-Huomio:
-
-- Tämä on hyvä uusi KidOS-periaatteisiin sopiva sovellus.
-- Värityskuvat ovat koodissa SVG/HTML-rakenteina, mikä sopii hyvin ilmaisen storage-rajan kanssa.
+Nykytila: **VÄRITYS = toimiva ensimmäinen versio**
 
 ## 20. SOITA-sovellus
 
-Sijainti:
+Sijainti: `apps/call/`
 
-```text
-apps/call/
-```
+- lapselle MUMMO-kortti ja puhelupainike; aikuinen syöttää Google Meet -koodin/linkin aikuisen näkymässä
+- avauspainiketta pidetään painettuna 3 sekuntia, hyväksytty linkki avataan uuteen välilehteen
 
-Nykyinen toteutus:
+Nykytila: **SOITA = toimiva paikallinen Meet-linkin avaava perusversio**
 
-- lapselle näkyy suuri MUMMO-kortti ja puhelupainike
-- puhelupainike avaa aikuisen näkymän
-- aikuinen syöttää Google Meet -koodin tai koko Meet-linkin
-- koodi tarkistetaan ja muutetaan muotoon `abc-defg-hij`
-- avauspainiketta pidetään painettuna kolme sekuntia
-- hyväksytty Meet-linkki avataan uuteen välilehteen
-- onnistuneen avauksen jälkeen näytetään SOITTO AVATTU -näkymä
-- sovellus käyttää yhteistä äänijärjestelmää
+Rajoitukset ja avoimet kysymykset:
 
-Nykytila:
-
-```text
-SOITA = toimiva paikallinen Meet-linkin avaava perusversio
-```
-
-Rajoitukset ja huomiot:
-
-- Staattinen selainprojekti ei voi käynnistää puhelua tai lähettää viestiä täysin automaattisesti.
 - Selaimen ponnahdusikkunaesto voi estää Meet-välilehden avautumisen.
-- `call.js` sisältää valmiin sähköposti-, SMS- ja WhatsApp-ilmoituksen pohjan, mutta nykyisessä HTML-käyttöliittymässä ei ole `notifyGrandmaButton`-painiketta eikä vastaanottajaa ole asetettu. Ilmoitustoiminto ei siis ole käyttäjän käytettävissä.
-- Enter-näppäin avaa kelvollisen Meet-koodin suoraan ilman kolmen sekunnin painallusta. Tämä on syytä päättää tietoisesti: joko hyväksytään aikuisen pikanäppäimeksi tai muutetaan noudattamaan samaa varmistusta.
-- SOITA ei sisällä omaa videopuhelutekniikkaa, vaan toimii turvallisena siirtymänä Google Meetiin.
+- Enter-näppäin avaa kelvollisen Meet-koodin suoraan ilman kolmen sekunnin painallusta — tietoisesti päättämätön: joko hyväksytään aikuisen pikanäppäimeksi tai muutetaan noudattamaan samaa varmistusta.
+- Aiemmin koodissa ollut keskeneräinen sähköposti/SMS/WhatsApp-ilmoitustoiminto (`notifyGrandmaButton`, `notifyGrandma()`) on poistettu kokonaan, koska sille ei ollut käyttöliittymää.
 
 ## 21. ROBOHAASTE-sovellus
 
-Sijainti:
+Sijainti: `apps/robot-challenge/`
 
-```text
-apps/robot-challenge/
-```
+Laajempi, oma ohjelmointipeli OHJELMOINTI-sovelluksen rinnalla: 10×10-ruudukko, viisi valmista kenttää, komentojono (enintään 20 komentoa), erikoiskomennot PAINA ja TYÖNNÄ, napit/ovet, kenttäeditori, tilastot LocalStoragessa (`kidos-robot-challenge-levels-v3`, `kidos-robot-challenge-stats-v3`).
 
-ROBOHAASTE on erillinen, OHJELMOINTI-sovellusta laajempi ohjelmointipeli. Vanha OHJELMOINTI säilyy kevyenä 4×4-harjoituksena, kun taas ROBOHAASTE tarjoaa suuret kentät, erikoiskomennot ja oman editorin.
+**Editorin parannus:** editori näyttää nyt näkyvän varoituksen (`#editorWarning`), jos kentästä puuttuu robotti ja/tai sydän. Itse suoritus esti tämän jo aiemmin pehmeästi (`hasRequiredPieces`), mutta editorissa ei ollut aiemmin mitään visuaalista vihjettä.
 
-Nykyinen toteutus:
+Nykytila: **ROBOHAASTE = toimiva laaja versio ja kenttäeditori**
 
-- ruudukko on 10×10
-- valittavana on viisi kenttäpaikkaa
-- mukana on viisi valmista oletuskenttää
-- komentojonossa voi olla enintään 20 komentoa
-- liikkumiskomennot ovat ylös, oikealle, alas ja vasemmalle
-- robotti ei käänny, vaan liikesuunta annetaan jokaisella komennolla erikseen
-- erikoiskomennot ovat PAINA ja TYÖNNÄ
-- PAINA avaa robotin vieressä olevan vihreän tai sinisen napin väriset ovet
-- TYÖNNÄ siirtää robotin vieressä olevaa laatikkoa yhden ruudun eteenpäin, jos tila on vapaa
-- mukana ovat seinät, laatikot, robotti, sydänmaali, vihreät ja siniset napit sekä ovet
-- täysi tai virheellinen liike keskeyttää suorituksen ja antaa virhepalautteen
-- komentopaikkaa painamalla yksittäisen komennon voi poistaa jonosta
-- kynäpainike vaihtaa kenttäeditoriin
-- editorilla voi sijoittaa ja poistaa kaikki käytössä olevat kenttäelementit
-- muokatut kentät tallennetaan LocalStorageen
-- yritysten ja suoritettujen komentojen määrät tallennetaan kenttäkohtaisesti LocalStorageen
-- onnistumisnäkymä näyttää yritys- ja komentomäärän
+Avoin: editori ei vielä tarkista kentän ratkaistavuutta (voi tallentaa kentän, joka ei ole läpäistävissä vaikka robotti ja sydän olisivatkin olemassa).
 
-Tallennusavaimet:
+## 22. LIIKENNE-sovellus
 
-```text
-kidos-robot-challenge-levels-v3
-kidos-robot-challenge-stats-v3
-```
+Sijainti: `apps/traffic/`
 
-Nykytila:
+Uusi peli: robotti ohjataan pienessä kaupungissa nuolinäppäimillä tai ruudulla näkyvällä ristiohjaimella, ja tehtävänä on toimittaa kaupungin eläimille niiden toivomat esineet turvallisesti liikennesääntöjä noudattaen.
 
-```text
-ROBOHAASTE = toimiva ensimmäinen laaja versio ja kenttäeditori
-```
+**Kaupunkigeneraattori** (`buildTiles()`):
 
-Huomiot:
+- Parametrisoitu korttelirakenne (`BLOCK_COLS`/`BLOCK_ROWS`/`BLOCK_INTERIOR`-vakioista), nyt 3×2 korttelia, kaupungin koko lasketaan automaattisesti näistä.
+- Kaksi ruutua leveät kadut korttelien välissä, molemmissa suunnissa (pysty- ja vaakakadut).
+- Suojatiet oikean suuntaisilla, harvennetuilla raidoilla — pystykaduilla ja vaakakaduilla on erilliset CSS-luokat (`orientation-h`/`orientation-v`), jotta raidat ovat oikein päin molemmissa risteystyypeissä.
+- Joka kortteliin lohkaistaan yksi nurkka takaisin pieneksi aukioksi (kiertyy kortteleittain tl→tr→br→bl), jotta asemakaava ei näytä liian täydelliseltä ruudukolta. Rakennus-/puuikoni siirtyy automaattisesti nurkan vastakkaiselle puolelle.
+- Kaksi puistoa (kävelykelpoisia, 🌳-koristein) ja neljä rakennusta (🏠/🏢/🏪, ei-kävelykelpoisia).
+- Muutama ajoneuvo (🚗🚕🚙🚌) ripoteltuna tasavälein katuverkkoon koristeeksi — ei vaikuta peliin, koska robotti ei voi koskaan astua autotielle.
 
-- Napit eivät ole käveltäviä ruutuja, vaan niitä painetaan viereisestä ruudusta.
-- Avattu ovi muuttuu kuljettavaksi loppusuorituksen ajaksi.
-- Uudelleenkäynnistyspainike tyhjentää komentojonon, palauttaa kentän alkutilaan ja nollaa kyseisen kentän tilastot.
-- Editorissa ei tällä hetkellä validoida kentän ratkaistavuutta. Se voi tallentaa kentän, josta puuttuu robotti tai sydän; tällöin suoritus ei käynnisty.
-- Kaksi ohjauspaneelin `?`-painiketta on varattu tuleville komennoille ja on nyt poistettu käytöstä.
+**Liikennevalo:**
 
-## 22. Kehityssäännöt
+- Yksi synkronoitu liikennevalo koko kaupungille (kaikki suojatiet vaihtavat väriä yhtä aikaa), automaattinen ajastin (vihreä 3s, punainen 3,5s, alkaa punaisena).
+- Sivupalkissa näkyy aina kaksi lamppua (punainen/vihreä), harmaa se joka ei pala.
+- Suojatie tarkistetaan vain kun astutaan jalkakäytävältä kadulle (ensimmäinen askel) — kesken ylityksen robotti ei jää jumiin vaikka valo vaihtuisi.
+- Jos pelaaja yrittää mennä punaisia päin, valopaneelin kehys välähtää punaisena (`.light-panel.flash`) tavallisen ravistuksen ja väärä-äänen lisäksi.
+- Jos pelaaja yrittää mennä suoraan autotielle, kadun ajoneuvokuvakkeet välähtävät punaisena (`drop-shadow`-tehoste, koska emoji on väripiirros).
+
+**Toimitustehtävä:**
+
+- Kaupungissa on kahdeksan eläintä, joilla on kiinteä pari-toive:
+
+  ```text
+  🐰 Pupu    → 🥕 Porkkana
+  🐵 Apina   → 🍌 Banaani
+  🐱 Kissa   → 🐟 Kala
+  🐶 Koira   → 🦴 Luu
+  🐻 Karhu   → 🍯 Hunaja
+  🐭 Hiiri   → 🧀 Juusto
+  🐝 Mehiläinen → 🌸 Kukka
+  🦆 Ankka   → 🍞 Leipä
+  ```
+
+- Eläimet arvotaan uuteen paikkaan (jalkakäytävä/puisto, ei koristeiden päälle) joka pelikerta (`UUDESTAAN`), niin että ne eivät ole liian lähekkäin toisiaan (Manhattan-etäisyys ≥ 6 ruutua, 300 yrityksen rejektiohyväksyntä varmuuden vuoksi).
+- Kävelemällä idle-tilassa olevan eläimen luo käynnistyy pyyntö: satunnainen esine ilmestyy satunnaiseen tyhjään ruutuun, ja sivupalkin tehtäväkuvake + viesti kertovat mitä pitää hakea.
+- Esine haetaan kävelemällä sen päälle (automaattinen poiminta), ja viedään takaisin sille samalle eläimelle.
+- Kun paketti on toimitettu, eläin **katoaa kaupungista kokonaan**, ja ruutuun ilmestyy pomppiva keltainen toast-ilmoitus (esim. "✅ 🐰 KIITOS 🥕!"), joka häviää itsestään ~1,8 s kuluttua.
+- Kun kaikki kahdeksan on toimitettu, viesti muuttuu erilliseksi loppu-onnitteluksi.
+- Kesken tehtävän muiden (ei-aktiivisten) eläinten luota kävellään vaikutuksetta ohi.
+
+**Käyttöliittymä:**
+
+- Robotti-haaste-tyylinen sivupalkkilayout: kartta täyttää suurimman osan ruudusta vasemmalla (`.board-panel`, koko käytettävissä oleva korkeus+leveys), kapea kiinteä sivupalkki oikealla sisältää viestin, liikennevalon, tehtäväkuvakkeen, ristiohjaimen ("OHJAA ROBOTTIA" -tekstillä) ja UUDESTAAN-napin.
+- Ristiohjain (▲◀▼▶) on toiminnallinen, ei vain kuvitusta — klikkaus liikuttaa robottia samalla logiikalla kuin näppäimistön nuolet. Hyödyllinen kosketusnäytöllä Raspberry Pi:llä.
+- `.board`-elementin koko lasketaan `width:100%` + `aspect-ratio` (asetetaan JS:stä `--grid-cols`/`--grid-rows`-muuttujien perusteella) + `max-height:100%`, jotta kartta skaalautuu oikein täyttämään käytettävissä olevan tilan sen sijaan että kutistuisi omaan sisältöönsä.
+
+Nykytila: **LIIKENNE = toimiva ensimmäinen versio, perusperiaatteet kunnossa**
+
+Mahdollisia jatkoideoita: isompi kaupunki (enemmän korttelirivejä/-sarakkeita), erilliset liikennevalot per risteys, vaikeustasoja, lisää eläin-esine-pareja.
+
+## 23. Kehityssäännöt
 
 Projektissa noudatetaan näitä sääntöjä:
 
-### 1. Ei rikota toimivaa peliä
+1. **Ei rikota toimivaa peliä.** Kun muokataan olemassa olevaa sovellusta, ei korvata koko rakennetta turhaan.
+2. **Sovelluksilla on omat kansiot.** Jokainen sovellus saa oman kansionsa `apps/`-kansion alle.
+3. **Yhteiset asiat ovat shared- tai assets-kansiossa** (`shared/audio.js`, `assets/kidos-cursor.svg`, `assets/kidos-icon.svg`).
+4. **Ei poikkeusratkaisuja yksittäisiin sovelluksiin.** Jos jokin asia on yleinen, siitä tehdään yhteinen ratkaisu (esim. näppäimistökohdistus korjattiin `script.js`:ssä kerran, ei per-sovellus).
+5. **Ei turhaa monimutkaisuutta.** KidOS ei tarvitse raskasta frameworkia tai palvelinta.
+6. **Selaimen välimuisti huomioidaan.** Iframe-sovelluksiin lisätään cache-buster.
+7. **Emoji-riippuvuutta tarkkaillaan.** Emoji-symbolit ovat nopeita ja käteviä, mutta voivat näyttää eri laitteilla erilaisilta. Jos jokin tärkeä symboli hajoaa, tehdään siitä CSS- tai SVG-pohjainen oma symboli.
+8. **Commitit ovat pieniä ja kuvaavia.** Muutokset committoidaan loogisissa paloissa (esim. yksi sovellus tai yksi korjaus per commit), ei yhtenä isona möhkäleenä.
 
-Kun muokataan olemassa olevaa sovellusta, ei korvata koko rakennetta turhaan.
+## 24. Julkaisu: GitHub ja Raspberry Pi -käynnistin
 
-### 2. Muutokset näytetään tiedostokohtaisesti
+**GitHub:** projekti on julkinen repo osoitteessa [github.com/McTre/KidOS](https://github.com/McTre/KidOS), `main`-branch. `README.md` toimii repon etusivuna: sisältää suomenkielisen esittelyn, sovelluslistan, työpöydän kuvakaappauksen (`assets/screenshot-desktop.png`) ja asennusohjeen. `kidos.zip` on git-ignoroitu (`.gitignore`) vanha snapshot-tiedosto, ei osa varsinaista repoa.
 
-Pienissä muutoksissa koodi annetaan mieluiten näin:
+**Täysruutukäynnistin Raspberry Pi:lle:**
 
-```text
-MUUTETTU TIEDOSTO:
-apps/numbers/numbers.js
-```
-
-Ja sen jälkeen kyseisen tiedoston sisältö.
-
-Pieniä muutoksia varten ei tehdä ZIP-tiedostoa.
-
-### 3. Sovelluksilla on omat kansiot
-
-Jokainen sovellus saa oman kansionsa `apps/`-kansion alle.
-
-### 4. Yhteiset asiat ovat shared- tai assets-kansiossa
-
-Esimerkiksi:
-
-```text
-shared/audio.js
-assets/kidos-cursor.svg
-```
-
-### 5. Ei poikkeusratkaisuja yksittäisiin sovelluksiin
-
-Jos jokin asia on yleinen, siitä tehdään yhteinen ratkaisu.
-
-### 6. Ei turhaa monimutkaisuutta
-
-KidOS ei tarvitse raskasta frameworkia tai palvelinta.
-
-### 7. Selaimen välimuisti huomioidaan
-
-Iframe-sovelluksiin lisätään cache-buster.
-
-### 8. Emoji-riippuvuutta tarkkaillaan
-
-Emoji-symbolit ovat nopeita ja käteviä prototyypissä, mutta ne voivat näyttää eri laitteilla erilaisilta. Jos jokin tärkeä symboli hajoaa, tehdään siitä CSS- tai SVG-pohjainen oma symboli.
-
-## 23. Koodikatselmuksen tulos
-
-Tarkistettu zipin JavaScript-tiedostot syntaksin osalta:
-
-```text
-script.js                        OK
-shared/audio.js                  OK
-apps/coloring/coloring.js        OK
-apps/call/call.js                OK
-apps/colors/colors.js            OK
-apps/drawing/drawing.js          OK
-apps/letters/letters.js          OK
-apps/lock/lock.js                OK
-apps/music/music.js              OK
-apps/numbers/numbers.js          OK
-apps/photos/photos.js            OK
-apps/programming/programming.js  OK
-apps/robot-challenge/robot-challenge.js  OK
-apps/story/story.js              OK
-```
-
-Kaikki 14 JavaScript-tiedostoa läpäisivät syntaksitarkistuksen. Lisäksi HTML-tiedostojen paikalliset tiedostoviittaukset löytyvät zipistä.
-
-Tämä ei vielä todista, että kaikki käyttöliittymätoiminnot ovat virheettömiä selaimessa. Katselmus ei sisältänyt kaikkien sovellusten interaktiivista käyttötestiä.
-
-## 24. Havaitut ristiriidat ja tekninen velka
-
-### 1. README-tiedostot ovat vanhentuneita
-
-Juurihakemiston README kuvaa vain VÄRIT-, NUMEROT- ja PIIRRÄ-sovellukset. `apps/colors/README.md` käyttää vielä vanhaa LeikkiOS-nimeä.
-
-### 2. PIIRRÄ on olemassa, mutta ei työpöydällä
-
-`apps/drawing/` on zipissä, mutta `script.js` ja `index.html` eivät tarjoa sitä työpöydän sovelluksena.
-
-Päätettävä:
-
-```text
-Lisätäänkö PIIRRÄ takaisin työpöydälle vai jätetäänkö se myöhemmäksi?
-```
-
-### 3. ÄÄNET-nimi on muuttunut MUSIIKIKSI
-
-Aiempi masterplan puhuu sovelluksesta nimellä `ÄÄNET`, mutta koodi käyttää nimeä `MUSIIKKI`.
-
-Päätettävä:
-
-```text
-Käytetäänkö lapselle nimeä ÄÄNET vai MUSIIKKI?
-```
-
-### 4. Custom cursor ei ole vielä täysin tavoitteiden mukainen
-
-Oma SVG-kursori on olemassa, mutta osa painikkeista käyttää edelleen `cursor: pointer;` -määritystä.
-
-Tämä voi aiheuttaa sen, että klikattavan elementin kohdalla näkyy käyttöjärjestelmän kursori.
-
-### 5. Työpöydän äänet eivät käytä shared/audio.js-tiedostoa
-
-Työpöydällä on oma `playDesktopSound()`-toteutus.
-
-Tämä toimii, mutta rikkoo hieman periaatetta, että yhteiset äänet pidetään yhdessä paikassa.
-
-### 6. SOITA-sovelluksessa on keskeneräinen ilmoitustoiminto
-
-JavaScriptissä on sähköposti-, SMS- ja WhatsApp-ilmoituksen pohja, mutta HTML:stä puuttuu sitä käyttävä painike ja vastaanottaja-asetus on tyhjä.
-
-### 7. Placeholder-tiedosto on yhä mukana
-
-`apps/placeholder.html` ei näytä olevan nykyisten työpöytäsovellusten käytössä, mutta sitä ei ole poistettu.
-
-### 8. ROBOHAASTEEN editori sallii puutteelliset kentät
-
-Editorissa ei tarkisteta, että kentässä on täsmälleen yksi robotti ja yksi sydän tai että kenttä on mahdollista ratkaista.
+- `launch-kidos.sh` etsii automaattisesti `chromium-browser`- tai `chromium`-komennon (toimii Raspberry Pi OS:n eri versioilla), avaa KidOSin Chromiumin kioskitilassa (`--kiosk`, ei osoiteriviä eikä muita selaimen elementtejä) ja estää näytönsäästäjän/sammutuksen (`xset`) kesken leikin.
+- `KidOS.desktop` on työpöytäkuvake, joka ajaa käynnistimen. `Exec=`/`Icon=`-polut osoittavat oletuksena `/home/pi/KidOS/...` — pitää säätää, jos projekti sijaitsee muualla.
+- Käyttöönotto: lataa/kloonaa repo Pi:lle → pura ZIP tarvittaessa → tarkista polut → kopioi `KidOS.desktop` työpöydälle tai `~/.local/share/applications/`-kansioon.
 
 ## 25. Nykyinen projektitila
 
-Katselmuksen perusteella KidOS on edennyt selvästi pidemmälle kuin vanha masterplan väitti.
-
-Nykytila:
-
 ```text
-KidOS-työpöytä       = tehty
-Sovellusikkuna       = tehty
-Punainen X-sulku     = tehty
-Lukitus              = tehty perusversiona
-Custom cursor        = osittain tehty
-Klikattavien korostus = tehty työpöydällä ja monessa sovelluksessa
-Yhteiset äänet       = tehty ja käytössä useimmissa sovelluksissa
-VÄRIT                = toimiva
-NUMEROT              = toimiva
-KIRJAIMET            = toimiva
-MUSIIKKI / ÄÄNET     = toimiva
-TARINA               = toimiva ensimmäinen versio
-OHJELMOINTI          = toimiva 4x4-versiona
-KUVAT                = toimiva symboligalleria
-VÄRITYS              = toimiva ensimmäinen versio
-SOITA                 = toimiva Meet-linkin avaava perusversio
-ROBOHAASTE            = toimiva laaja versio ja kenttäeditori
-PIIRRÄ               = olemassa, mutta ei viimeistelty eikä työpöydällä
+KidOS-työpöytä        = tehty, automaattinen sovelluskohdistus
+Sovellusikkuna        = tehty
+Punainen X-sulku      = tehty
+Lukitus               = tehty perusversiona
+Custom cursor         = tehty, cursor:pointer-jäänteet korjattu kaikkialta
+Klikattavien korostus = tehty
+Yhteiset äänet        = tehty ja käytössä kaikkialla, myös työpöydällä ja PIIRRÄssä
+VÄRIT                 = toimiva
+NUMEROT               = toimiva
+KIRJAIMET             = toimiva
+MUSIIKKI              = toimiva, näppäimistötuki (D F G H J K)
+TARINA                = toimiva ensimmäinen versio
+OHJELMOINTI           = toimiva 4×4-versiona
+KUVAT                 = toimiva symboligalleria
+VÄRITYS               = toimiva ensimmäinen versio
+SOITA                 = toimiva Meet-linkin avaava perusversio, kuollut ilmoituskoodi poistettu
+ROBOHAASTE            = toimiva laaja versio, editorin robotti/sydän-varoitus lisätty
+LIIKENNE              = uusi, toimiva ensimmäinen versio
+PIIRRÄ                = olemassa, tietoisesti ei työpöydällä
+GitHub-julkaisu       = tehty (github.com/McTre/KidOS)
+Pi-täysruutukäynnistin = tehty (launch-kidos.sh + KidOS.desktop)
 ```
 
-Projektin painopiste siirtyy nyt uusien perustoimintojen rakentamisesta kokonaisuuden siistimiseen.
+Projektin painopiste on siirtynyt perustan siistimisestä uuden sisällön (LIIKENNE) ja julkaisun (GitHub, Pi-käynnistin) rakentamiseen. Kaikki aiemman katselmuksen "korjaa ensin nämä" -kohdat on tehty.
 
-## 26. Tärkein seuraava työlista
+## 26. Avoimet kysymykset ja tekninen velka
 
-### Korjaa ensin nämä — tila 2026-09-18
-
-1. **TEHTY.** Juurihakemiston README päivitetty vastaamaan kaikkia nykyisiä sovelluksia.
-2. **TEHTY.** Vanha `apps/colors/README.md` (LeikkiOS-jäänne) poistettu.
-3. **TEHTY.** Kaikki `cursor: pointer;` -määritykset korvattu KidOSin omalla kursorilla (`apps/*/style.css` ja juuren `style.css`, 19 kohtaa).
-4. **PÄÄTETTY.** Nimeksi vakiintuu `MUSIIKKI`. Koodia ei muutettu, koska se käytti jo tätä nimeä.
-5. **PÄÄTETTY.** `PIIRRÄ` jätetään toistaiseksi työpöydän ulkopuolelle. Pieni epäjohdonmukaisuus korjattu: `apps/drawing/index.html` lataa nyt `shared/audio.js`:n, jotta se on valmiimpi myöhempää viimeistelyä varten.
-6. **TEHTY.** SOITA-sovelluksen käyttämätön ilmoitustoiminto (`notifyGrandmaButton`, `notifyGrandma()`, `grandmaNotify`) poistettu `call.js`:stä, koska HTML:ssä ei ollut vastaavaa painiketta eikä vastaanottajaa ollut asetettu.
-7. **TEHTY.** ROBOHAASTEEN editoriin lisätty näkyvä varoitus (`#editorWarning`), joka kertoo jos kentästä puuttuu robotti ja/tai sydän. Suoritus itsessään esti tämän jo aiemmin pehmeästi (`hasRequiredPieces`), mutta editorissa ei ollut mitään visuaalista vihjettä.
-8. **TEHTY.** Työpöydän äänet (`script.js`) käyttävät nyt `shared/audio.js`:n `playOpenSound`/`playCloseSound`-funktioita oman Web Audio -toteutuksen sijaan. `index.html` lataa `shared/audio.js`:n ennen `script.js`:ää.
-9. **TEHTY.** Käyttämätön `apps/placeholder.html` poistettu.
-
-Kaikki yhdeksän kohtaa on nyt korjattu. Jäljelle jäävät avoimet kysymykset (esim. SOITA:n Enter-pikanäppäin, ROBOHAASTEEN kentän ratkaistavuustarkistus) on listattu kohdissa 20 ja 27.
-
-### Sen jälkeen viimeistele
-
-- testaa kaikki sovellukset iframe-ikkunassa
-- tarkista pienempi näyttö / leveä näyttö
-- varmista, että lukko toimii myös sovelluksen sisältä
-- varmista, että Escape ei avaa lukkoa vahingossa vaan vain sulkee sovelluksen tai kuvanäkymän
-- tarkista, että kaikki tekstit ovat isoilla kirjaimilla
-- tarkista, että sovellukset eivät näytä vanhoja placeholder-versioita
-- tarkista, että hover/focus-korostus toimii kaikissa klikattavissa elementeissä
-- testaa SOITA eri selainten ponnahdusikkunaestoilla
-- testaa ROBOHAASTEEN viisi oletuskenttää alusta loppuun
-- varmista ROBOHAASTEEN editorin ja LocalStoragen toiminta selaimen uudelleenkäynnistyksen jälkeen
+1. **SOITA:** Enter-näppäin ohittaa 3 sekunnin pidon — päätettävä tietoisesti, hyväksytäänkö pikanäppäimeksi vai yhtenäistetäänkö.
+2. **ROBOHAASTE:** editori ei tarkista kentän ratkaistavuutta, vain robotin/sydämen olemassaolon.
+3. **LIIKENNE:** yksi synkronoitu liikennevalo koko kaupungille — realistisempi versio antaisi joka risteykselle oman valon ja ajastuksen.
+4. **PIIRRÄ:** ei tyhjennysnappia eikä värivalintaa; pysyy työpöydän ulkopuolella kunnes tämä päätetään viimeistellä.
 
 ## 27. Myöhemmät jatkoideat
 
 Näitä ei tarvita perusversion valmistumiseen:
 
-- PWA-tuki
-- koko ruudun tila
 - äänten päälle/pois -asetus
 - vanhemman asetussivu
-- lisää kirjain- ja sanapaketteja
-- lisää lauluja
-- lisää värityskuvia
+- lisää kirjain- ja sanapaketteja, lisää lauluja, lisää värityskuvia
 - oikeita optimoituja kuvia KUVAT-sovellukseen
-- muistipeli
-- muotopeli
-- palkintotähdet tai tarrat
-- LocalStorage lasten saavutuksille
+- muistipeli, muotopeli
+- palkintotähdet tai tarrat, LocalStorage lasten saavutuksille
 - lukon vaikeustasot
-- täysin animoitu oma kursori
+- täysin animoitu oma kursori (div-pohjainen cursor-layer)
 - SOITA-sovelluksen aikuisen asetukset ja useampi turvallinen yhteystieto
-- ROBOHAASTEEN uudet komennot nykyisiin `?`-paikkoihin
-- ROBOHAASTEEN kentän validointi ja ratkaistavuustarkistus
-- ROBOHAASTEEN kenttien vienti ja tuonti tiedostona
+- ROBOHAASTEEN uudet komennot nykyisiin `?`-paikkoihin, kentän ratkaistavuustarkistus, kenttien vienti/tuonti tiedostona
+- LIIKENTEEN isompi kaupunki, erilliset risteyskohtaiset valot, vaikeustasoja, lisää eläin-esine-pareja
 
 ## 28. KidOSin tavoite
 
@@ -916,19 +477,11 @@ Sen ei tarvitse olla teknisesti monimutkainen.
 
 Tärkeintä on, että lapsi voi:
 
-- klikata
-- kokeilla
-- onnistua
-- kuulla palautetta
-- oppia värejä
-- harjoitella numeroita
-- tutustua kirjaimiin
-- soittaa ääniä
-- katsoa kuvia
-- värittää
-- piirtää
-- kokeilla ohjelmointiajattelua
-- ratkaista laajempia robottihaasteita ja rakentaa omia kenttiä
+- klikata, kokeilla, onnistua, kuulla palautetta
+- oppia värejä, harjoitella numeroita, tutustua kirjaimiin
+- soittaa ääniä, katsoa kuvia, värittää, piirtää
+- kokeilla ohjelmointiajattelua ja ratkaista laajempia robottihaasteita
+- opetella liikennesääntöjä turvallisesti leikin kautta
 - pyytää aikuisen avulla turvallisesti videopuhelun avaamista
 - käyttää tietokonetta turvallisesti
 

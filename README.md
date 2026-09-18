@@ -1,5 +1,7 @@
 # KidOS
 
+![KidOS-työpöytä](./assets/screenshot-desktop.png)
+
 **KidOS** on selainpohjainen "leikkikäyttöjärjestelmä" 3–5-vuotiaille lapsille.
 
 Tarkoitus ei ole tehdä oikeaa käyttöjärjestelmää, vaan turvallinen, koko ruudun täyttävä leikkiympäristö, jossa lapsi voi harjoitella tietokoneen käyttöä, hiirtä, näppäimistöä, värejä, numeroita, kirjaimia, ääniä, yksinkertaista ohjelmointiajattelua ja liikennesääntöjä — ilman että hän pääsee vahingossa muualle koneelle.

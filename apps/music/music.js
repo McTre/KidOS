@@ -1,10 +1,10 @@
 const keys = [
-  { id: 'C', label: 'DO', frequency: 261.63, color: '#ff5d73' },
-  { id: 'D', label: 'RE', frequency: 293.66, color: '#ffad4d' },
-  { id: 'E', label: 'MI', frequency: 329.63, color: '#ffd54a' },
-  { id: 'F', label: 'FA', frequency: 349.23, color: '#67dc8a' },
-  { id: 'G', label: 'SO', frequency: 392.0, color: '#59a8ff' },
-  { id: 'A', label: 'LA', frequency: 440.0, color: '#b185ff' }
+  { id: 'C', label: 'DO', frequency: 261.63, color: '#ff5d73', letter: 'D' },
+  { id: 'D', label: 'RE', frequency: 293.66, color: '#ffad4d', letter: 'F' },
+  { id: 'E', label: 'MI', frequency: 329.63, color: '#ffd54a', letter: 'G' },
+  { id: 'F', label: 'FA', frequency: 349.23, color: '#67dc8a', letter: 'H' },
+  { id: 'G', label: 'SO', frequency: 392.0, color: '#59a8ff', letter: 'J' },
+  { id: 'A', label: 'LA', frequency: 440.0, color: '#b185ff', letter: 'K' }
 ];
 
 const songs = [
@@ -161,7 +161,7 @@ function createLayout() {
     const button = document.createElement('button');
     button.className = 'key';
     button.type = 'button';
-    button.textContent = '';
+    button.textContent = key.letter;
     button.setAttribute('aria-label', key.label);
     button.style.background = key.color;
     button.dataset.note = key.id;
@@ -317,9 +317,21 @@ function changeSong(direction) {
   restartSong();
 }
 
+function handleKeyboardPress(event) {
+  if (event.repeat) return;
+
+  const letter = event.key.toUpperCase();
+  const key = keys.find(k => k.letter === letter);
+  if (!key) return;
+
+  event.preventDefault();
+  handleKeyPress(key.id);
+}
+
 restartButton.addEventListener('click', restartSong);
 prevSongButton.addEventListener('click', () => changeSong(-1));
 nextSongButton.addEventListener('click', () => changeSong(1));
+document.addEventListener('keydown', handleKeyboardPress);
 
 createLayout();
 restartSong();

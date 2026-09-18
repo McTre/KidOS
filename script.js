@@ -38,6 +38,10 @@ const apps = {
   robotchallenge: {
     title: 'ROBOHAASTE',
     url: './apps/robot-challenge/index.html'
+  },
+  traffic: {
+    title: 'LIIKENNE',
+    url: './apps/traffic/index.html'
   }
 };
 
@@ -99,7 +103,21 @@ function openApp(appName) {
   appWindow.classList.add('open');
   appWindow.setAttribute('aria-hidden', 'false');
 
+  focusAppFrame();
+
   playDesktopSound('open');
+}
+
+function focusAppFrame() {
+  appFrame.addEventListener(
+    'load',
+    () => {
+      if (appFrame.contentWindow) {
+        appFrame.contentWindow.focus();
+      }
+    },
+    { once: true }
+  );
 }
 
 function closeApp() {

@@ -323,10 +323,33 @@ function pickRandomItemPosition() {
   return { row: choice.row, col: choice.col };
 }
 
+const boardPanel = boardElement.closest('.board-panel');
+
+function resizeBoardToFit() {
+  const styles = getComputedStyle(boardPanel);
+  const paddingX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+  const paddingY = parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom);
+  const availWidth = boardPanel.clientWidth - paddingX;
+  const availHeight = boardPanel.clientHeight - paddingY;
+  if (availWidth <= 0 || availHeight <= 0) return;
+
+  const ratio = GRID_COLS / GRID_ROWS;
+  let width = availWidth;
+  let height = width / ratio;
+  if (height > availHeight) {
+    height = availHeight;
+    width = height * ratio;
+  }
+
+  boardElement.style.width = `${width}px`;
+  boardElement.style.height = `${height}px`;
+}
+
 function initBoardGrid() {
   boardElement.style.setProperty('--grid-cols', String(GRID_COLS));
   boardElement.style.setProperty('--grid-rows', String(GRID_ROWS));
-  boardElement.style.aspectRatio = `${GRID_COLS} / ${GRID_ROWS}`;
+  resizeBoardToFit();
+  new ResizeObserver(resizeBoardToFit).observe(boardPanel);
 }
 
 function renderBoard() {

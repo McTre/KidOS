@@ -11,17 +11,17 @@
   <body>
     <main class="screen" id="desktopScreen">
       <header class="topbar">
-        <div class="brand">
-          <div class="brand-mark" aria-hidden="true">★</div>
-          <h1>KIDOS</h1>
-        </div>
-
         <button
           class="lock-button topbar-lock-button"
           aria-label="Lukitse KidOS"
         >
           🔒
         </button>
+
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">★</div>
+          <h1>KIDOS</h1>
+        </div>
       </header>
 
       <section class="desktop" aria-label="KidOS työpöytä">
@@ -85,16 +85,16 @@
 
     <section class="app-window" id="appWindow" aria-hidden="true">
       <header class="window-titlebar">
+        <button
+          class="lock-button window-lock-button"
+          aria-label="Lukitse KidOS"
+        >
+          🔒
+        </button>
+
         <div class="window-title" id="windowTitle">SOVELLUS</div>
 
         <div class="window-actions">
-          <button
-            class="lock-button window-lock-button"
-            aria-label="Lukitse KidOS"
-          >
-            🔒
-          </button>
-
           <button
             class="close-button"
             id="closeButton"

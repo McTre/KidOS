@@ -42,6 +42,10 @@ const apps = {
   traffic: {
     title: 'LIIKENNE',
     url: './apps/traffic/index.html'
+  },
+  shop: {
+    title: 'KAUPPA',
+    url: './apps/shop/index.html'
   }
 };
 

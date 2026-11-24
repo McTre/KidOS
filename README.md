@@ -23,6 +23,7 @@ Työpöydältä avautuvat sovellukset:
 - **SOITA** (`apps/call/`) – turvallinen Google Meet -linkin avaus aikuisen avulla
 - **ROBOHAASTE** (`apps/robot-challenge/`) – laajempi robottipulma ja oma kenttäeditori
 - **LIIKENNE** (`apps/traffic/`) – robotti ohjataan nuolinäppäimillä (tai ruudun ohjaimilla) pienessä kaupungissa: jalkakäytävät, kaksikaistaiset autotiet, suojatiet liikennevaloineen, puistoja ja rakennuksia. Kaupungissa asuu kahdeksan eläintä, joilla on kiinteä toive (esim. 🐰 haluaa 🥕); eläimet arvotaan uuteen paikkaan joka pelikerta niin, että ne eivät ole liian lähekkäin
+- **KAUPPA** (`apps/shop/`) – kauppaleikki: tuotteet hyllystä tai oikealla viivakoodinlukijalla koriin, maksu rahalla tai kortilla. Tuotteet, viivakoodit ja maksukortit opetetaan asetuksissa (⚙️, pidä pohjassa 2 s)
 
 Näiden lisäksi:
 
@@ -48,6 +49,16 @@ Tarkempi suunnitelma, tehdyt korjaukset ja tunnetut puutteet: ks. [`KidOS-master
 6. **Kaksoisklikkaa KidOS-kuvaketta.** Käynnistin (`launch-kidos.sh`) avaa Chromiumin kioskitilassa suoraan täysruutuun, ilman osoiteriviä tai muita selaimen elementtejä, ja estää näytönsäästäjän aktivoitumisen kesken leikin.
 
 `launch-kidos.sh` etsii automaattisesti `chromium-browser`- tai `chromium`-komennon, joten se toimii Raspberry Pi OS:n eri versioilla.
+
+## Viivakoodinlukija (KAUPPA)
+
+KAUPPA toimii tavallisella USB- tai Bluetooth-viivakoodinlukijalla, joka on näppäimistötilassa (HID, oletus useimmissa lukijoissa). Erillisiä ajureita ei tarvita.
+
+- Lukijan pitää lähettää koodin perään **Enter** (useimpien oletus). Myös Tab käy. Ilman päätemerkkiä vähintään 6 merkin koodit tunnistetaan lyhyen tauon jälkeen.
+- Lukijan pitää kirjoittaa nopeasti (alle 80 ms merkkien välillä). Tavalliset lukijat kirjoittavat selvästi nopeammin.
+- Lukijan näppäimistöasettelulla ei ole merkitystä tavallisille numerokoodeille (EAN). Kirjaimia sisältävät koodit voivat vaatia, että lukijan ja koneen asettelu täsmäävät.
+- Tuotteiden ja maksukortin koodit opetetaan KAUPAN asetuksissa: ⚙️ (pidä pohjassa 2 s) → **OPETA KOODI** / **OPETA KORTTI** → lue koodi. Maksukortiksi käy mikä tahansa viivakoodi, esimerkiksi vanha kanta-asiakaskortti tai tulostettu koodi.
+- Tiedot tallentuvat selaimen LocalStorageen, joten ne säilyvät samalla koneella ja selaimella. Selaimen tietojen tyhjentäminen poistaa ne.
 
 ## Kokeilu tavallisella tietokoneella
 

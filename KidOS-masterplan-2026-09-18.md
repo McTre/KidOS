@@ -9,7 +9,7 @@ Tila: git-repon nykytilaa vastaava kooste (github.com/McTre/KidOS, `main`)
 
 Tarkoitus ei ole tehdä oikeaa käyttöjärjestelmää, vaan turvallinen, koko ruudun leikkiympäristö, jossa lapsi voi harjoitella tietokoneen käyttöä, hiirtä, näppäimistöä, värejä, numeroita, kirjaimia, ääniä, yksinkertaista ohjelmointiajattelua, liikennesääntöjä, kuvien katselua, väritystä ja luovaa tekemistä.
 
-KidOS toimii selaimessa ja on tehty kevyenä HTML/CSS/JavaScript-projektina. Projekti on git-repona GitHubissa, ja siitä voi ajaa suoraan täysruutuisena Raspberry Pi:llä (ks. luku 24).
+KidOS toimii selaimessa ja on tehty kevyenä HTML/CSS/JavaScript-projektina. Projekti on git-repona GitHubissa, ja siitä voi ajaa suoraan täysruutuisena Raspberry Pi:llä (ks. luku 25).
 
 Käyttöliittymä suunnitellaan lapselle, joka ei välttämättä osaa lukea. KidOS perustuu ensisijaisesti suuriin painikkeisiin, selkeisiin väreihin, isoihin symboleihin, muotoihin, ääniin, toistuvaan logiikkaan ja onnistumisen tunteeseen.
 
@@ -73,7 +73,7 @@ Teknologiat:
 - Canvas peleihin ja piirtämiseen
 - Web Audio API ääniin
 - iframe KidOSin sisäisiin sovellusikkunoihin
-- LocalStorage lukon symbolisalasanalle sekä ROBOHAASTEEN kentille ja tilastoille
+- LocalStorage lukon symbolisalasanalle, ROBOHAASTEEN kentille ja tilastoille sekä KAUPAN tuotteille ja maksukorteille
 - SVG/CSS värityspelin täytettäville alueille ja LIIKENTEEN kaupunkiruudukolle
 - Google Meet -linkin avaaminen SOITA-sovelluksesta uuteen välilehteen
 - Chromiumin kioskitila (`--kiosk`) täysruutukäynnistykseen Raspberry Pi:llä
@@ -119,6 +119,7 @@ KidOS/
     ├── programming/       index.html, style.css, programming.js
     ├── robot-challenge/   index.html, style.css, robot-challenge.js
     ├── traffic/           index.html, style.css, traffic.js
+    ├── shop/              index.html, style.css, shop.js
     ├── lock/              index.html, style.css, lock.js
     └── drawing/           index.html, style.css, drawing.js  (ei työpöydällä)
 ```
@@ -129,11 +130,11 @@ Vanhat, aiemmin tunnetut epäjohdonmukaisuudet on korjattu: `apps/colors/README.
 
 KidOS käynnistyy työpöydälle.
 
-Työpöydän sovellukset (11 kpl):
+Työpöydän sovellukset (12 kpl):
 
 ```text
 VÄRIT, OHJELMOINTI, KIRJAIMET, NUMEROT, MUSIIKKI, TARINA,
-KUVAT, VÄRITYS, SOITA, ROBOHAASTE, LIIKENNE
+KUVAT, VÄRITYS, SOITA, ROBOHAASTE, LIIKENNE, KAUPPA
 ```
 
 Sovellukset avataan KidOSin sisäiseen iframe-ikkunaan.
@@ -395,7 +396,26 @@ Nykytila: **LIIKENNE = toimiva ensimmäinen versio, perusperiaatteet kunnossa**
 
 Mahdollisia jatkoideoita: isompi kaupunki (enemmän korttelirivejä/-sarakkeita), erilliset liikennevalot per risteys, vaikeustasoja, lisää eläin-esine-pareja.
 
-## 23. Kehityssäännöt
+## 23. KAUPPA-sovellus
+
+Sijainti: `apps/shop/`
+
+Kauppaleikki: lapsi on kassalla, kerää tuotteet koriin ja ottaa maksun vastaan.
+
+- vasemmalla hylly (enintään 12 isoa tuotenappia: kuva, nimi, hinta), oikealla kassa: lukijan merkkivalo, ostoskori, summa ja maksunapit **RAHALLA** 💶 / **KORTILLA** 💳
+- korin rivin painaminen poistaa yhden kappaleen, 🗑️ tyhjentää koko korin
+- **oikea viivakoodinlukija:** USB/Bluetooth-lukija näkyy selaimelle näppäimistönä. Lukija tunnistetaan nopeudesta: merkit tulevat alle 80 ms välein ja perään Enter (tai Tab). Jos lukija ei lähetä Enteriä, vähintään 6 merkin nopea sarja hyväksytään 200 ms tauon jälkeen. Lapsen tavallinen näppäily ei laukaise lukua. Lukijan Enter ei paina kohdistettua nappia, eivätkä kaupan napit jää kohdistetuiksi klikkauksen jälkeen.
+- tunnettu tuotekoodi lisää tuotteen koriin (piippaus + vihreä välähdys), tuntematon koodi näyttää punaisen **?**
+- **KORTILLA** avaa "LUE KORTTI" -ikkunan, joka hyväksyy vain opetetun maksukortin koodin (väärä koodi = kortti tärisee punaisena). Opetetun kortin voi lukea myös suoraan kassalla, kun korissa on tavaraa. Jos yhtään korttia ei ole opetettu, korttia voi painaa ruudulla.
+- maksun jälkeen KIITOS!-ruutu (maksutapa, summa, ostetut tuotteet), joka sulkeutuu itsestään tai painamalla ja tyhjentää korin
+- **asetukset (aikuiselle):** ⚙️-nappi hyllyn oikeassa alakulmassa, avautuu 2 sekunnin painalluksella. Tuotteille voi vaihtaa kuvan (emojivalikko), nimen, hinnan (0–99 €) ja hyllynäkyvyyden, opettaa yhden tai useamman viivakoodin sekä poistaa tuotteen. Tuotteita voi olla enemmän kuin hyllyyn mahtuu: piilotetut löytyvät vain viivakoodilla. Maksukortteja voi opettaa useita. Koodin voi opettaessa myös kirjoittaa käsin ja painaa Enter. Sama koodi ei voi olla sekä tuotteella että kortilla. "Palauta oletustuotteet" säilyttää kortit.
+- tallennus: LocalStorage-avain `kidos-shop-v1`
+
+Nykytila: **KAUPPA = uusi, toimiva ensimmäinen versio**
+
+Mahdollisia jatkoideoita: käteismaksu kolikoita laskemalla (lapsi antaa oikean määrän kolikoita), kuitti, asiakashahmot ostoslistoineen.
+
+## 24. Kehityssäännöt
 
 Projektissa noudatetaan näitä sääntöjä:
 
@@ -408,7 +428,7 @@ Projektissa noudatetaan näitä sääntöjä:
 7. **Emoji-riippuvuutta tarkkaillaan.** Emoji-symbolit ovat nopeita ja käteviä, mutta voivat näyttää eri laitteilla erilaisilta. Jos jokin tärkeä symboli hajoaa, tehdään siitä CSS- tai SVG-pohjainen oma symboli.
 8. **Commitit ovat pieniä ja kuvaavia.** Muutokset committoidaan loogisissa paloissa (esim. yksi sovellus tai yksi korjaus per commit), ei yhtenä isona möhkäleenä.
 
-## 24. Julkaisu: GitHub ja Raspberry Pi -käynnistin
+## 25. Julkaisu: GitHub ja Raspberry Pi -käynnistin
 
 **GitHub:** projekti on julkinen repo osoitteessa [github.com/McTre/KidOS](https://github.com/McTre/KidOS), `main`-branch. `README.md` toimii repon etusivuna: sisältää suomenkielisen esittelyn, sovelluslistan, työpöydän kuvakaappauksen (`assets/screenshot-desktop.png`) ja asennusohjeen. `kidos.zip` on git-ignoroitu (`.gitignore`) vanha snapshot-tiedosto, ei osa varsinaista repoa.
 
@@ -418,7 +438,7 @@ Projektissa noudatetaan näitä sääntöjä:
 - `KidOS.desktop` on työpöytäkuvake, joka ajaa käynnistimen. `Exec=`/`Icon=`-polut osoittavat oletuksena `/home/pi/KidOS/...` — pitää säätää, jos projekti sijaitsee muualla.
 - Käyttöönotto: lataa/kloonaa repo Pi:lle → pura ZIP tarvittaessa → tarkista polut → kopioi `KidOS.desktop` työpöydälle tai `~/.local/share/applications/`-kansioon.
 
-## 25. Nykyinen projektitila
+## 26. Nykyinen projektitila
 
 ```text
 KidOS-työpöytä        = tehty, automaattinen sovelluskohdistus
@@ -438,7 +458,8 @@ KUVAT                 = toimiva symboligalleria
 VÄRITYS               = toimiva ensimmäinen versio
 SOITA                 = toimiva Meet-linkin avaava perusversio, kuollut ilmoituskoodi poistettu
 ROBOHAASTE            = toimiva laaja versio, editorin robotti/sydän-varoitus lisätty
-LIIKENNE              = uusi, toimiva ensimmäinen versio
+LIIKENNE              = toimiva ensimmäinen versio
+KAUPPA                = uusi, toimiva ensimmäinen versio (viivakoodinlukijatuki)
 PIIRRÄ                = olemassa, tietoisesti ei työpöydällä
 GitHub-julkaisu       = tehty (github.com/McTre/KidOS)
 Pi-täysruutukäynnistin = tehty (launch-kidos.sh + KidOS.desktop)
@@ -446,14 +467,14 @@ Pi-täysruutukäynnistin = tehty (launch-kidos.sh + KidOS.desktop)
 
 Projektin painopiste on siirtynyt perustan siistimisestä uuden sisällön (LIIKENNE) ja julkaisun (GitHub, Pi-käynnistin) rakentamiseen. Kaikki aiemman katselmuksen "korjaa ensin nämä" -kohdat on tehty.
 
-## 26. Avoimet kysymykset ja tekninen velka
+## 27. Avoimet kysymykset ja tekninen velka
 
 1. **SOITA:** Enter-näppäin ohittaa 3 sekunnin pidon — päätettävä tietoisesti, hyväksytäänkö pikanäppäimeksi vai yhtenäistetäänkö.
 2. **ROBOHAASTE:** editori ei tarkista kentän ratkaistavuutta, vain robotin/sydämen olemassaolon.
 3. **LIIKENNE:** yksi synkronoitu liikennevalo koko kaupungille — realistisempi versio antaisi joka risteykselle oman valon ja ajastuksen.
 4. **PIIRRÄ:** ei tyhjennysnappia eikä värivalintaa; pysyy työpöydän ulkopuolella kunnes tämä päätetään viimeistellä.
 
-## 27. Myöhemmät jatkoideat
+## 28. Myöhemmät jatkoideat
 
 Näitä ei tarvita perusversion valmistumiseen:
 
@@ -469,11 +490,12 @@ Näitä ei tarvita perusversion valmistumiseen:
 - ROBOHAASTEEN uudet komennot nykyisiin `?`-paikkoihin, kentän ratkaistavuustarkistus, kenttien vienti/tuonti tiedostona
 - LIIKENTEEN isompi kaupunki, erilliset risteyskohtaiset valot, vaikeustasoja, lisää eläin-esine-pareja
 
-## 28. KidOSin tavoite
+## 29. KidOSin tavoite
 
 KidOSin tavoite on olla pieni, turvallinen ja hauska leikkiympäristö.
 
 Sen ei tarvitse olla teknisesti monimutkainen.
+- KAUPAN kolikoilla maksaminen, asiakashahmot ja ostoslistat
 
 Tärkeintä on, että lapsi voi:
 

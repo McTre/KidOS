@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KidOS – Kauppa</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="../../shared/audio.js" defer></script>
+  <script src="./shop.js" defer></script>
+</head>
+<body>
+  <main class="shop-shell">
+    <section class="shelf-panel" aria-label="Kaupan hylly">
+      <div class="shelf" id="shelf"></div>
+
+      <button
+        class="settings-button"
+        id="settingsButton"
+        type="button"
+        aria-label="Kaupan asetukset (pidä pohjassa)"
+      >
+        <span aria-hidden="true">⚙️</span>
+      </button>
+    </section>
+
+    <aside class="register-panel" aria-label="Kassa">
+      <div class="scanner" id="scanner" aria-live="polite">
+        <div class="barcode" aria-hidden="true"></div>
+        <div class="scanner-message" id="scannerMessage"></div>
+      </div>
+
+      <ul class="cart" id="cart" aria-label="Ostoskori"></ul>
+
+      <div class="total-row">
+        <span class="total-icon" aria-hidden="true">🧺</span>
+        <strong class="total" id="total">0 €</strong>
+        <button class="clear-button" id="clearButton" type="button" aria-label="Tyhjennä kori">🗑️</button>
+      </div>
+
+      <div class="pay-buttons">
+        <button class="pay-button cash" id="payCash" type="button">
+          <span class="pay-icon" aria-hidden="true">💶</span>
+          <span class="pay-label">RAHALLA</span>
+        </button>
+        <button class="pay-button card" id="payCard" type="button">
+          <span class="pay-icon" aria-hidden="true">💳</span>
+          <span class="pay-label">KORTILLA</span>
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <div class="overlay hidden" id="cardOverlay" role="dialog" aria-modal="true" aria-label="Maksa kortilla">
+    <div class="overlay-card">
+      <button class="overlay-close" id="cardCancel" type="button" aria-label="Peruuta">×</button>
+      <div class="card-total" id="cardTotal">0 €</div>
+      <button class="card-visual" id="cardVisual" type="button" aria-label="Maksukortti">
+        <span class="card-chip" aria-hidden="true"></span>
+        <span class="card-stripes" aria-hidden="true"></span>
+      </button>
+      <div class="card-arrow" aria-hidden="true">⬇</div>
+      <div class="card-scanner barcode" aria-hidden="true"></div>
+      <div class="overlay-hint" id="cardHint">LUE KORTTI</div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="thanksOverlay" role="dialog" aria-modal="true" aria-label="Kiitos ostoksista">
+    <div class="overlay-card thanks-card" id="thanksCard">
+      <div class="thanks-title">KIITOS!</div>
+      <div class="thanks-row">
+        <span class="thanks-method" id="thanksMethod" aria-hidden="true">💶</span>
+        <strong id="thanksTotal">0 €</strong>
+      </div>
+      <div class="thanks-items" id="thanksItems" aria-hidden="true"></div>
+      <div class="overlay-hint">UUSI ASIAKAS ▶</div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="settingsOverlay" role="dialog" aria-modal="true" aria-label="Kaupan asetukset">
+    <div class="settings-card">
+      <header class="settings-header">
+        <h2>KAUPAN ASETUKSET</h2>
+        <button class="overlay-close" id="settingsClose" type="button" aria-label="Sulje asetukset">×</button>
+      </header>
+
+      <div class="settings-body">
+        <section class="settings-section">
+          <div class="section-title">
+            <h3>TUOTTEET</h3>
+            <p>Hyllyllä näkyy enintään <span id="maxShelf">12</span> tuotetta. Muut tuotteet löytyvät vain viivakoodilla.</p>
+          </div>
+          <div class="product-rows" id="productRows"></div>
+          <button class="settings-action" id="addProduct" type="button">+ UUSI TUOTE</button>
+        </section>
+
+        <section class="settings-section">
+          <div class="section-title">
+            <h3>MAKSUKORTIT</h3>
+            <p>Opeta kortin viivakoodi, niin KORTILLA-maksu hyväksyy sen. Jos yhtään korttia ei ole opetettu, korttia voi painaa ruudulla.</p>
+          </div>
+          <div class="card-codes" id="cardCodes"></div>
+          <button class="settings-action" id="learnCard" type="button">💳 OPETA KORTTI</button>
+        </section>
+
+        <section class="settings-section">
+          <button class="settings-action danger" id="resetShop" type="button">PALAUTA OLETUSTUOTTEET</button>
+        </section>
+      </div>
+
+      <div class="learn-banner hidden" id="learnBanner">
+        <div class="learn-text" id="learnText">LUE VIIVAKOODI LUKIJALLA</div>
+        <div class="learn-buffer" id="learnBuffer"></div>
+        <p class="learn-help">Voit myös kirjoittaa koodin ja painaa Enter.</p>
+        <button class="settings-action" id="learnCancel" type="button">PERUUTA</button>
+      </div>
+
+      <div class="emoji-picker hidden" id="emojiPicker" aria-label="Valitse kuva"></div>
+    </div>
+  </div>
+</body>
+</html>

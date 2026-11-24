@@ -10,48 +10,43 @@
 </head>
 <body>
   <main class="call-shell">
-    <section class="screen-view active" id="startView" aria-label="Soita mummolle">
-      <article class="contact-card" aria-label="Mummo">
-        <div class="contact-icon">👵</div>
-        <div class="contact-info">
-          <h1>MUMMO</h1>
-          <div class="contact-heart">❤️</div>
-        </div>
-        <button class="call-button" id="childCallButton" type="button" aria-label="Soita mummolle">
-          📞
-        </button>
-      </article>
-      <p class="helper-text">PAINA LUURIA</p>
-    </section>
-
-    <section class="screen-view" id="adultView" aria-label="Aikuisen soittonäkymä">
+    <section class="screen-view active" id="adultView" aria-label="Aikuisen soittonäkymä">
       <div class="adult-topline">
-        <div class="small-symbol">👵</div>
+        <div class="small-symbol">📞</div>
         <div>
           <h1>AIKUINEN</h1>
-          <p class="adult-help">ANNA MEET-KOODI</p>
+          <p class="adult-help">ANNA NEUKKARIN KOODI</p>
         </div>
       </div>
 
       <input
-        id="meetCodeInput"
+        id="codeInput"
         class="meet-input"
         type="text"
         inputmode="text"
         autocomplete="off"
         autocapitalize="none"
         spellcheck="false"
-        placeholder="abc-defg-hij"
-        aria-label="Google Meet -koodi"
+        placeholder="sauna kettu pilvi"
+        aria-label="Neukkarin liittymiskoodi"
       />
 
-      <p class="adult-help compact">KOODI VOI OLLA MYÖS KOKO MEET-LINKKI</p>
+      <p class="adult-help compact">KOLME SANAA NEUKKARIN HUONEESTA</p>
+
       <p class="error-text" id="errorText" aria-live="polite"></p>
 
       <div class="adult-actions">
-        <button class="back-button" id="backToStartButton" type="button">
-          TAKAISIN
-        </button>
+        <label class="child-name">
+          LAPSEN NIMI
+          <input
+            id="childNameInput"
+            type="text"
+            maxlength="17"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Lapsen nimi puhelussa"
+          />
+        </label>
       </div>
 
       <button class="hold-button" id="holdButton" type="button">
@@ -63,7 +58,7 @@
     <section class="screen-view" id="openedView" aria-label="Puhelu avattu">
       <div class="big-symbol">✨</div>
       <h1>SOITTO AVATTU</h1>
-      <p class="helper-text">MEET AUKESI UUTEEN VÄLILEHTEEN</p>
+      <p class="helper-text">PUHELU AUKESI OMAAN IKKUNAAN</p>
       <button class="back-button" id="newCallButton" type="button">UUSI SOITTO</button>
     </section>
   </main>

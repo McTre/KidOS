@@ -1,39 +1,26 @@
 const views = {
-  start: document.getElementById('startView'),
   adult: document.getElementById('adultView'),
   opened: document.getElementById('openedView')
 };
 
-const childCallButton = document.getElementById('childCallButton');
-const backToStartButton = document.getElementById('backToStartButton');
 const holdButton = document.getElementById('holdButton');
 const holdProgress = document.getElementById('holdProgress');
-const meetCodeInput = document.getElementById('meetCodeInput');
+const codeInput = document.getElementById('codeInput');
+const childNameInput = document.getElementById('childNameInput');
 const errorText = document.getElementById('errorText');
 const newCallButton = document.getElementById('newCallButton');
+
+// Puhelut kulkevat Neukkarin kautta (onkoauki.fi/neukkari). Kehityskonetta varten osoitteen voi vaihtaa selaimen
+// konsolissa: localStorage.setItem('kidos-call-server', 'http://192.168.x.x:8080').
+const DEFAULT_SERVER = 'https://onkoauki.fi';
+const SERVER_KEY = 'kidos-call-server';
+const CHILD_NAME_KEY = 'kidos-call-child-name';
 
 const holdDurationMs = 3000;
 let holdTimer = null;
 let holdStartedAt = 0;
 let holdTick = null;
-let pendingMeetUrl = '';
-
-if (childCallButton) {
-  childCallButton.addEventListener('click', () => {
-    playSound('correct');
-    clearCodeInput();
-    showView('adult');
-  });
-}
-
-if (backToStartButton) {
-  backToStartButton.addEventListener('click', () => {
-    stopHold();
-    playSound('close');
-    clearCodeInput();
-    showView('start');
-  });
-}
+let pendingCallUrl = '';
 
 if (holdButton) {
   holdButton.addEventListener('pointerdown', startHold);
@@ -42,17 +29,24 @@ if (holdButton) {
   holdButton.addEventListener('pointercancel', stopHold);
 }
 
-if (meetCodeInput) {
-  meetCodeInput.addEventListener('keydown', (event) => {
+if (codeInput) {
+  codeInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       startOpenHoldFromKeyboard();
     }
   });
 
-  meetCodeInput.addEventListener('input', () => {
-    pendingMeetUrl = '';
+  codeInput.addEventListener('input', () => {
+    pendingCallUrl = '';
     clearError();
+  });
+}
+
+if (childNameInput) {
+  childNameInput.value = readStorage(CHILD_NAME_KEY) || '';
+  childNameInput.addEventListener('input', () => {
+    writeStorage(CHILD_NAME_KEY, childNameInput.value.trim());
   });
 }
 
@@ -60,7 +54,7 @@ if (newCallButton) {
   newCallButton.addEventListener('click', () => {
     playSound('open');
     clearCodeInput();
-    showView('start');
+    showView('adult');
   });
 }
 
@@ -75,19 +69,19 @@ function showView(name) {
     views[name].classList.add('active');
   }
 
-  if (name === 'adult' && meetCodeInput) {
-    setTimeout(() => meetCodeInput.focus(), 80);
+  if (name === 'adult' && codeInput) {
+    setTimeout(() => codeInput.focus(), 80);
   }
 }
 
 function startOpenHoldFromKeyboard() {
-  const meetUrl = buildMeetUrl();
+  const callUrl = buildCallUrl();
 
-  if (!meetUrl) {
+  if (!callUrl) {
     return;
   }
 
-  openMeetCall(meetUrl);
+  openCall(callUrl);
 }
 
 function startHold(event) {
@@ -97,8 +91,8 @@ function startHold(event) {
 
   stopHold();
 
-  pendingMeetUrl = buildMeetUrl();
-  if (!pendingMeetUrl) {
+  pendingCallUrl = buildCallUrl();
+  if (!pendingCallUrl) {
     return;
   }
 
@@ -112,9 +106,9 @@ function startHold(event) {
   holdTick = setInterval(updateHoldProgress, 100);
 
   holdTimer = setTimeout(() => {
-    const meetUrl = pendingMeetUrl;
+    const callUrl = pendingCallUrl;
     stopHold(false);
-    openMeetCall(meetUrl);
+    openCall(callUrl);
   }, holdDurationMs);
 }
 
@@ -148,21 +142,30 @@ function updateHoldProgress() {
   holdProgress.textContent = String(remaining);
 }
 
-function buildMeetUrl() {
-  const code = normalizeMeetCode(meetCodeInput ? meetCodeInput.value : '');
+function buildCallUrl() {
+  const code = normalizeCallCode(codeInput ? codeInput.value : '');
 
   if (!code) {
-    showError('TARKISTA MEET-KOODI');
+    showError('TARKISTA KOODI');
     playSound('wrong');
     return '';
   }
 
   clearError();
-  return `https://meet.google.com/${code}`;
+
+  const server = (readStorage(SERVER_KEY) || DEFAULT_SERVER).replace(/\/+$/, '');
+  const params = new URLSearchParams({
+    koodi: code,
+    nimi: childNameInput ? childNameInput.value.trim() : ''
+  });
+
+  return `${server}/neukkari/pikaliity?${params.toString()}`;
 }
 
-function openMeetCall(meetUrl) {
-  const openedWindow = window.open(meetUrl, '_blank', 'noopener,noreferrer');
+function openCall(callUrl) {
+  // Ei noopener-ominaisuutta: sen kanssa window.open palauttaa aina null. Puhelusivu sulkee ikkunansa itse
+  // punaisesta luurista, jolloin KidOS on taas näkyvissä (toimii myös Chromiumin kioskitilassa).
+  const openedWindow = window.open(callUrl, 'kidos-call');
 
   if (!openedWindow) {
     showError('SELAIN ESTI AVAUKSEN');
@@ -170,37 +173,45 @@ function openMeetCall(meetUrl) {
     return;
   }
 
+  openedWindow.opener = null;
   playSound('win');
   showView('opened');
 }
 
-function normalizeMeetCode(value) {
-  let code = value.trim().toLowerCase();
+// Neukkarin liittymiskoodi on kolme sanaa (esim. "sauna kettu pilvi"). Palvelin hyväksyy välit, viivat tai sanat
+// peräkkäin, joten tässä vain siistitään ja tarkistetaan, että kirjaimia on tarpeeksi.
+function normalizeCallCode(value) {
+  const code = value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-zåäö]+/g, ' ')
+    .trim()
+    .replace(/ /g, '-');
 
-  code = code.replace(/^https?:\/\/(www\.)?meet\.google\.com\//, '');
-  code = code.split('?')[0];
-  code = code.split('#')[0];
-  code = code.replace(/\s+/g, '');
-  code = code.replace(/[^a-z-]/g, '');
+  return code.replace(/-/g, '').length >= 6 ? code : '';
+}
 
-  const lettersOnly = code.replace(/-/g, '');
-
-  if (lettersOnly.length === 10) {
-    return `${lettersOnly.slice(0, 3)}-${lettersOnly.slice(3, 7)}-${lettersOnly.slice(7)}`;
+function readStorage(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch (error) {
+    return null;
   }
+}
 
-  if (/^[a-z]{3}-[a-z]{4}-[a-z]{3}$/.test(code)) {
-    return code;
+function writeStorage(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    // Tallennus ei ole pakollinen.
   }
-
-  return '';
 }
 
 function clearCodeInput() {
-  pendingMeetUrl = '';
+  pendingCallUrl = '';
 
-  if (meetCodeInput) {
-    meetCodeInput.value = '';
+  if (codeInput) {
+    codeInput.value = '';
   }
 
   clearError();
@@ -239,3 +250,5 @@ function playSound(type) {
     playWinSound();
   }
 }
+
+showView('adult');

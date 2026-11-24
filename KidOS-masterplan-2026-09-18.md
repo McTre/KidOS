@@ -75,7 +75,7 @@ Teknologiat:
 - iframe KidOSin sisäisiin sovellusikkunoihin
 - LocalStorage lukon symbolisalasanalle, ROBOHAASTEEN kentille ja tilastoille sekä KAUPAN tuotteille ja maksukorteille
 - SVG/CSS värityspelin täytettäville alueille ja LIIKENTEEN kaupunkiruudukolle
-- Google Meet -linkin avaaminen SOITA-sovelluksesta uuteen välilehteen
+- SOITA avaa Neukkarin pikaliittymisen (onkoauki.fi/neukkari/pikaliity) omaan ikkunaansa
 - Chromiumin kioskitila (`--kiosk`) täysruutukäynnistykseen Raspberry Pi:llä
 
 Ei tarvita:
@@ -318,15 +318,21 @@ Nykytila: **VÄRITYS = toimiva ensimmäinen versio**
 
 Sijainti: `apps/call/`
 
-- lapselle MUMMO-kortti ja puhelupainike; aikuinen syöttää Google Meet -koodin/linkin aikuisen näkymässä
-- avauspainiketta pidetään painettuna 3 sekuntia, hyväksytty linkki avataan uuteen välilehteen
+- SOITA avautuu suoraan aikuisen koodinäkymään. Aiempi MUMMO-kortti on poistettu (24.11.2026), koska yhteystietoja ei voi valita: soitettava määräytyy Neukkarin huoneesta.
+- **Puhelut kulkevat Neukkarin kautta (24.11.2026, aiemmin Google Meet).** Aikuinen luo huoneen tavallisessa Neukkarissa (onkoauki.fi/neukkari), lähettää kutsulinkin soitettavalle (esim. mummolle) ja tekee huoneeseen liittymiskoodin (kolme sanaa). Aikuisen näkymään syötetään koodi ja lapsen nimi. Nimi muistetaan (`kidos-call-child-name`).
+- avauspainiketta pidetään painettuna 3 sekuntia. Sen jälkeen SOITA avaa omaan ikkunaansa osoitteen `https://onkoauki.fi/neukkari/pikaliity?koodi=…&nimi=…`.
+- **Pikaliity** on Neukkarin yksinkertaistettu liittymisnäkymä, eikä sillä voi luoda huonetta. Puhelu alkaa heti, kun ikkuna aukeaa, koska soittamisesta on jo päätetty SOITAssa, eikä välivaihetta tarvita. Tämä vaatii, että selain sallii äänen ilman painallusta. `launch-kidos.sh` antaa Chromiumille lipun `--autoplay-policy=no-user-gesture-required`. Muualla (tavallinen selain) näkyy varalle iso vihreä luuri. Näkymässä on muiden osallistujien isot kuvat, joissa on nimen alkukirjain ja nimi (vihreä rengas, kun puhuu) ja iso punainen luuri, joka lopettaa puhelun ja sulkee ikkunan, jolloin KidOS on taas näkyvissä. Mikrofoni on aina auki. Koodi on onkoauki-repossa (`docs/neukkari/README.md`, kohta Pikaliity).
+- **Miksi oma ikkuna eikä iframe:** Neukkarin istuntoeväste (SameSite=Lax) ei kulje toisen sivuston kehyksessä, joten puhelusivu ei toimisi KidOSin ikkunan sisällä. Ikkuna avataan ilman `noopener`-ominaisuutta, jotta sivu voi sulkea itsensä (`window.close()`). Tämä toimii myös Chromiumin kioskitilassa.
+- **Palvelin:** oletuksena `https://onkoauki.fi`. Kehityskoneelle osoitteen voi vaihtaa selaimen konsolissa: `localStorage.setItem('kidos-call-server', 'http://192.168.122.211:8080')`. Kehityskone on http-yhteydellä, joten mikrofoni vaatii Chromiumin lipun `--unsafely-treat-insecure-origin-as-secure=…`.
 
-Nykytila: **SOITA = toimiva paikallinen Meet-linkin avaava perusversio**
+Nykytila: **SOITA = toimii Neukkarin pikaliittymisellä, testattu kehityskoneella** (kahdella Chromella valemikrofonilla: liittyminen koodilla, ääni molempiin suuntiin, varattu nimi saa numeron, punainen luuri sulkee ikkunan, väärä koodi antaa virheen)
 
 Rajoitukset ja avoimet kysymykset:
 
-- Selaimen ponnahdusikkunaesto voi estää Meet-välilehden avautumisen.
-- Enter-näppäin avaa kelvollisen Meet-koodin suoraan ilman kolmen sekunnin painallusta — tietoisesti päättämätön: joko hyväksytään aikuisen pikanäppäimeksi tai muutetaan noudattamaan samaa varmistusta.
+- Selaimen ponnahdusikkunaesto voi estää puheluikkunan avautumisen.
+- Pikaliity ei ole vielä tuotannossa (onkoauki.fi), ennen kuin onkoauki-muutokset viedään sinne.
+- Neukkarin huoneet ovat kertakäyttöisiä (sulkeutuvat 2 h tyhjänä), joten jokaiselle puhelulle tehdään uusi huone ja koodi. Pysyvä "soita mummolle yhdellä napilla" vaatisi Neukkariin pysyvät yhteystiedot.
+- Enter-näppäin avaa kelvollisen koodin suoraan ilman kolmen sekunnin painallusta — tietoisesti päättämätön: joko hyväksytään aikuisen pikanäppäimeksi tai muutetaan noudattamaan samaa varmistusta.
 - Aiemmin koodissa ollut keskeneräinen sähköposti/SMS/WhatsApp-ilmoitustoiminto (`notifyGrandmaButton`, `notifyGrandma()`) on poistettu kokonaan, koska sille ei ollut käyttöliittymää.
 
 ## 21. ROBOHAASTE-sovellus
@@ -434,7 +440,7 @@ Projektissa noudatetaan näitä sääntöjä:
 
 **Täysruutukäynnistin Raspberry Pi:lle:**
 
-- `launch-kidos.sh` etsii automaattisesti `chromium-browser`- tai `chromium`-komennon (toimii Raspberry Pi OS:n eri versioilla), avaa KidOSin Chromiumin kioskitilassa (`--kiosk`, ei osoiteriviä eikä muita selaimen elementtejä) ja estää näytönsäästäjän/sammutuksen (`xset`) kesken leikin.
+- `launch-kidos.sh` etsii automaattisesti `chromium-browser`- tai `chromium`-komennon (toimii Raspberry Pi OS:n eri versioilla), avaa KidOSin Chromiumin kioskitilassa (`--kiosk`, ei osoiteriviä eikä muita selaimen elementtejä) ja estää näytönsäästäjän/sammutuksen (`xset`) kesken leikin. Lippu `--autoplay-policy=no-user-gesture-required` antaa SOITAn puheluikkunan aloittaa puhelun heti ilman erillistä painallusta.
 - `KidOS.desktop` on työpöytäkuvake, joka ajaa käynnistimen. `Exec=`/`Icon=`-polut osoittavat oletuksena `/home/pi/KidOS/...` — pitää säätää, jos projekti sijaitsee muualla.
 - Käyttöönotto: lataa/kloonaa repo Pi:lle → pura ZIP tarvittaessa → tarkista polut → kopioi `KidOS.desktop` työpöydälle tai `~/.local/share/applications/`-kansioon.
 
@@ -456,7 +462,7 @@ TARINA                = toimiva ensimmäinen versio
 OHJELMOINTI           = toimiva 4×4-versiona
 KUVAT                 = toimiva symboligalleria
 VÄRITYS               = toimiva ensimmäinen versio
-SOITA                 = toimiva Meet-linkin avaava perusversio, kuollut ilmoituskoodi poistettu
+SOITA                 = Neukkarin pikaliity (Meet poistettu), testattu kehityskoneella
 ROBOHAASTE            = toimiva laaja versio, editorin robotti/sydän-varoitus lisätty
 LIIKENNE              = toimiva ensimmäinen versio
 KAUPPA                = uusi, toimiva ensimmäinen versio (viivakoodinlukijatuki)
@@ -489,13 +495,13 @@ Näitä ei tarvita perusversion valmistumiseen:
 - SOITA-sovelluksen aikuisen asetukset ja useampi turvallinen yhteystieto
 - ROBOHAASTEEN uudet komennot nykyisiin `?`-paikkoihin, kentän ratkaistavuustarkistus, kenttien vienti/tuonti tiedostona
 - LIIKENTEEN isompi kaupunki, erilliset risteyskohtaiset valot, vaikeustasoja, lisää eläin-esine-pareja
+- KAUPAN kolikoilla maksaminen, asiakashahmot ja ostoslistat
 
 ## 29. KidOSin tavoite
 
 KidOSin tavoite on olla pieni, turvallinen ja hauska leikkiympäristö.
 
 Sen ei tarvitse olla teknisesti monimutkainen.
-- KAUPAN kolikoilla maksaminen, asiakashahmot ja ostoslistat
 
 Tärkeintä on, että lapsi voi:
 

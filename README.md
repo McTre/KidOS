@@ -20,7 +20,7 @@ Työpöydältä avautuvat sovellukset:
 - **TARINA** (`apps/story/`) – valintapohjainen kuvatarina
 - **KUVAT** (`apps/photos/`) – symbolipohjainen kuvagalleria
 - **VÄRITYS** (`apps/coloring/`) – väritysohjelma
-- **SOITA** (`apps/call/`) – turvallinen Google Meet -linkin avaus aikuisen avulla
+- **SOITA** (`apps/call/`) – äänipuhelu Neukkarin kautta: aikuinen antaa Neukkarin liittymiskoodin, puhelu alkaa heti omassa ikkunassaan ja lapsi lopettaa sen isolla punaisella luurilla (ks. masterplanin SOITA-luku)
 - **ROBOHAASTE** (`apps/robot-challenge/`) – laajempi robottipulma ja oma kenttäeditori
 - **LIIKENNE** (`apps/traffic/`) – robotti ohjataan nuolinäppäimillä (tai ruudun ohjaimilla) pienessä kaupungissa: jalkakäytävät, kaksikaistaiset autotiet, suojatiet liikennevaloineen, puistoja ja rakennuksia. Kaupungissa asuu kahdeksan eläintä, joilla on kiinteä toive (esim. 🐰 haluaa 🥕); eläimet arvotaan uuteen paikkaan joka pelikerta niin, että ne eivät ole liian lähekkäin
 - **KAUPPA** (`apps/shop/`) – kauppaleikki: tuotteet hyllystä tai oikealla viivakoodinlukijalla koriin, maksu rahalla tai kortilla. Tuotteet, viivakoodit ja maksukortit opetetaan asetuksissa (⚙️, pidä pohjassa 2 s)

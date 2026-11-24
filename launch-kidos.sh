@@ -19,6 +19,8 @@ xset s off >/dev/null 2>&1
 xset s noblank >/dev/null 2>&1
 xset -dpms >/dev/null 2>&1
 
+# --autoplay-policy: SOITAn puheluikkuna (Neukkarin pikaliity) saa aloittaa puhelun heti ilman
+# erillistä painallusta.
 exec "$BROWSER" \
   --kiosk \
   --noerrdialogs \
@@ -26,4 +28,5 @@ exec "$BROWSER" \
   --no-first-run \
   --disable-session-crashed-bubble \
   --check-for-update-interval=31536000 \
+  --autoplay-policy=no-user-gesture-required \
   "file://$DIR/index.html"
